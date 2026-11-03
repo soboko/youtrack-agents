@@ -1,0 +1,132 @@
+{
+  "me": "household1",
+  "people": {
+    "household1": "The Household",
+    "ccoulter": "Chris Coulter",
+    "cholloway": "Chris Holloway",
+    "zoe7": "Zoë Ångström",
+    "pnair": "Priya Nair",
+    "mjones": "Mary Jones"
+  },
+  "issues": [
+    {
+      "key": "H-1",
+      "summary": "Descale the kettle",
+      "state": "Open",
+      "assignee": "household1",
+      "updated": "2026-09-12T08:00:00Z"
+    },
+    {
+      "key": "H-2",
+      "summary": "Order more bin bags",
+      "state": "Open",
+      "assignee": "household1",
+      "updated": "2026-09-11T08:00:00Z"
+    },
+    {
+      "key": "H-3",
+      "summary": "Fix the garden gate latch",
+      "state": "In Progress",
+      "assignee": "ccoulter",
+      "updated": "2026-09-12T07:00:00Z"
+    },
+    {
+      "key": "H-4",
+      "summary": "Book the boiler service",
+      "state": "Open",
+      "assignee": "ccoulter",
+      "updated": "2026-09-10T08:00:00Z"
+    },
+    {
+      "key": "H-5",
+      "summary": "Renew the parking permit",
+      "state": "Submitted",
+      "assignee": "ccoulter",
+      "updated": "2026-09-09T08:00:00Z"
+    },
+    {
+      "key": "H-6",
+      "summary": "Return the drill to the neighbours",
+      "state": "Fixed",
+      "assignee": "ccoulter",
+      "updated": "2026-09-12T06:00:00Z"
+    },
+    {
+      "key": "H-7",
+      "summary": "Paint the shed door",
+      "state": "Open",
+      "assignee": "cholloway",
+      "updated": "2026-09-12T05:00:00Z"
+    },
+    {
+      "key": "H-8",
+      "summary": "Clear the gutters",
+      "state": "Open",
+      "assignee": "cholloway",
+      "updated": "2026-09-11T05:00:00Z"
+    },
+    {
+      "key": "H-9",
+      "summary": "Sort the recycling rota",
+      "state": "Open",
+      "assignee": "cholloway",
+      "updated": "2026-09-10T05:00:00Z"
+    },
+    {
+      "key": "H-10",
+      "summary": "Replace the hall light bulb",
+      "state": "Open",
+      "assignee": "cholloway",
+      "updated": "2026-09-09T05:00:00Z"
+    },
+    {
+      "key": "H-11",
+      "summary": "Tune the bicycle brakes",
+      "state": "Open",
+      "assignee": "cholloway",
+      "updated": "2026-09-08T05:00:00Z"
+    },
+    {
+      "key": "H-12",
+      "summary": "Plant the spring bulbs",
+      "state": "Open",
+      "assignee": "cholloway",
+      "updated": "2026-09-07T05:00:00Z"
+    },
+    {
+      "key": "H-13",
+      "summary": "Mend the torn sofa cushion",
+      "state": "Open",
+      "assignee": "cholloway",
+      "updated": "2026-09-06T05:00:00Z"
+    },
+    {
+      "key": "H-14",
+      "summary": "Label the fuse box",
+      "state": "In Progress",
+      "assignee": "zoe7",
+      "updated": "2026-09-12T04:00:00Z"
+    },
+    {
+      "key": "H-15",
+      "summary": "Donate the old coats",
+      "state": "Fixed",
+      "assignee": "pnair",
+      "updated": "2026-09-12T03:00:00Z"
+    },
+    {
+      "key": "H-16",
+      "summary": "Find a window cleaner",
+      "state": "Open",
+      "assignee": null,
+      "updated": "2026-09-05T03:00:00Z"
+    },
+    {
+      "key": "H-17",
+      "summary": "Water the window boxes",
+      "state": "Open",
+      "assignee": "mjones",
+      "updated": "2026-09-04T03:00:00Z"
+    }
+  ]
+}

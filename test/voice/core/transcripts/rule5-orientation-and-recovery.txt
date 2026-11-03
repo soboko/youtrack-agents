@@ -1,0 +1,75 @@
+# Design rule 5: orientation and recovery. "Where am I" names the list, the issue and the part. "Repeat" replays the
+# last response. After barge-in or a closed session, the next turn resumes from the stored offset.
+> where am i
+< You're at the start. Say 'my issues' to hear your list.
+> repeat
+< You're at the start. Say 'my issues' to hear your list.
+> my issues
+< You have 8 issues.
+< One: Fix the login redirect loop.
+< Two: Add dark mode to settings.
+< Three: Write the onboarding guide.
+< Four: Speed up search results.
+< Five: Remove the old export button.
+< 3 more. Say 'more' to hear them.
+> where am i
+< You're in your issues, 8 issues.
+< You last heard 1 to 5.
+> open one
+< [earcon: success]
+< Number 1.
+< Fix the login redirect loop.
+< In Progress.
+< Say 'description', 'comments', or 'fields'.
+> where am i
+< You're in your issues, 8 issues.
+< Issue number 1: Fix the login redirect loop.
+< Nothing read from it yet.
+> description
+< Description, 3 paragraphs.
+< Paragraph 1 of 3.
+< After signing in, the page sends you back to the sign-in form. It happens on Safari only.
+< Say 'more' to go on.
+> more
+< Paragraph 2 of 3.
+< The redirect is set in auth/callback.ts. See the session notes and an issue for background.
+> where am i
+< You're in your issues, 8 issues.
+< Issue number 1: Fix the login redirect loop.
+< Reading the description, paragraph 2 of 3.
+> repeat
+< You're in your issues, 8 issues.
+< Issue number 1: Fix the login redirect loop.
+< Reading the description, paragraph 2 of 3.
+# A miss does not replace what "repeat" replays.
+> wibble wobble
+< I didn't catch that. You can say 'my issues', or 'help'.
+> repeat
+< You're in your issues, 8 issues.
+< Issue number 1: Fix the login redirect loop.
+< Reading the description, paragraph 2 of 3.
+# The session closes mid-description; the next one resumes where the reading stopped.
+@end silence
+< (silence)
+@launch
+< Welcome back.
+< You were reading the description of Fix the login redirect loop.
+< Say 'more' to go on, or 'my issues'.
+> more
+< [earcon: endOfList]
+< Paragraph 3 of 3.
+< Next step: reproduce it with a fresh profile.
+< End of the description.
+> where was i
+< You're in your issues, 8 issues.
+< Issue number 1: Fix the login redirect loop.
+< Reading the description, paragraph 3 of 3.
+> comments
+< 2 comments.
+< Comment 1 of 2, from Ana, on 11 September.
+< I can reproduce this on my phone too.
+< Say 'more' to go on.
+> where am i
+< You're in your issues, 8 issues.
+< Issue number 1: Fix the login redirect loop.
+< Reading the comments, comment 1 of 2.

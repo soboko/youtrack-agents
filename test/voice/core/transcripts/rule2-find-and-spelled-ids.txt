@@ -1,0 +1,75 @@
+# Design rule 2: fuzzy summary match second, spelled id last. Spelled ids take letters, digits and the phonetic
+# alphabet. An id is only read back because the person asked for it by id.
+> find login
+< 2 issues match.
+< One: Fix the login redirect loop.
+< Two: Login emails arrive late.
+> open two
+< [earcon: success]
+< Number 2.
+< Login emails arrive late.
+< Open.
+< Say 'description', 'comments', or 'fields'.
+# Recognisers split words; the fuzzy match joins them back, and ranks the better match first.
+> look for the log in redirect
+< 2 issues match.
+< One: Fix the login redirect loop.
+< Two: Login emails arrive late.
+> search for update
+< [earcon: success]
+< 1 issue matches.
+< Number 1.
+< Update the privacy policy.
+< Open.
+< Say 'description', 'comments', or 'fields'.
+> open two
+< [earcon: failure]
+< There's no number 2. The list has 1.
+> find something about bananas
+< No issues match.
+< You're still in the matches for update.
+> find
+< What should I look for? Say 'find' and some words from the title.
+# Spelled ids: phonetic alphabet, letter names, digits, and typed.
+> open issue yankee alpha two two
+< [earcon: success]
+< Issue Y A 22.
+< Add dark mode to settings.
+< Submitted.
+< Say 'description', 'comments', or 'fields'.
+> issue why ay two one
+< [earcon: success]
+< Issue Y A 21.
+< Fix the login redirect loop.
+< In Progress.
+< Say 'description', 'comments', or 'fields'.
+> open issue Y A 2 5
+< [earcon: success]
+< Issue Y A 25.
+< Remove the old export button.
+< Open.
+< Say 'description', 'comments', or 'fields'.
+> spell yankee alpha twenty six
+< [earcon: success]
+< Issue Y A 26.
+< Calendar sync drops events.
+< Open.
+< Say 'description', 'comments', or 'fields'.
+> open issue YA-27
+< [earcon: success]
+< Issue Y A 27.
+< Update the privacy policy.
+< Open.
+< Say 'description', 'comments', or 'fields'.
+> open issue yankee alpha nine nine
+< [earcon: failure]
+< I heard Y A 99, but there's no issue with that id.
+> open issue banana
+< I couldn't make an id out of that. Spell the letters, then the number, like 'yankee alpha one three'.
+# Opening by id leaves the working set alone.
+> open one
+< [earcon: success]
+< Number 1.
+< Update the privacy policy.
+< Open.
+< Say 'description', 'comments', or 'fields'.

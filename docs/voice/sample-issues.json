@@ -1,0 +1,143 @@
+{
+  "me": "robin",
+  "people": {"robin": "Robin Hale", "priya": "Priya Shah", "sam": "Sam Okafor"},
+  "issues": [
+    {
+      "key": "HOME-12",
+      "summary": "Book the piano tuner before the recital",
+      "state": "In Progress",
+      "assignee": "robin",
+      "subsystem": "Music",
+      "updated": "2026-09-12T08:10:00Z",
+      "description": "The recital is on **Saturday 3 October**, so the tuning has to be done by the week before.\n\nLast time we used [Harbour Piano Services](https://harbourpiano.example/booking). Their number is on the fridge.\n\nAsk whether they can also look at the sticking middle C.",
+      "comments": [
+        {"author": "Sam", "created": "2026-09-10T18:20:00Z", "text": "They have a slot on the 24th in the morning."},
+        {
+          "author": "Robin",
+          "created": "2026-09-11T09:05:00Z",
+          "text": "The 24th works. I'll confirm by phone on Monday."
+        }
+      ]
+    },
+    {
+      "key": "HOME-15",
+      "summary": "Draft the October community newsletter",
+      "state": "In Progress",
+      "assignee": "robin",
+      "subsystem": "Community",
+      "updated": "2026-09-11T16:45:00Z",
+      "description": "## Sections\n\n1. Welcome from the chair\n2. Allotment open day\n3. Lost and found\n4. Dates for the diary\n\nKeep it under 600 words; the printed copy is two sides of A5.\n\nPhotos go in the shared folder at https://drive.example.com/folders/newsletter-october, and the template is the usual one.",
+      "comments": [
+        {
+          "author": "Priya",
+          "created": "2026-09-09T12:00:00Z",
+          "text": "Can we add a note about the new bin collection day? It moves to *Thursday* from the 1st."
+        },
+        {"author": "Robin", "created": "2026-09-09T13:30:00Z", "text": "Yes, I'll put it under dates for the diary."},
+        {"author": "Sam", "created": "2026-09-11T16:40:00Z", "text": "Chair's welcome is attached. About 120 words."}
+      ]
+    },
+    {
+      "key": "HOME-9",
+      "summary": "Compare quotes for the new boiler",
+      "state": "Open",
+      "assignee": "robin",
+      "subsystem": "House",
+      "updated": "2026-09-10T10:00:00Z",
+      "description": "Three quotes so far:\n\n| Company | Price | Warranty |\n| --- | --- | --- |\n| Northside Heating | 2,450 pounds | 7 years |\n| Brightwarm | 2,890 pounds | 10 years |\n| A. Patel and Sons | 2,300 pounds | 5 years |\n\nThe survey from Brightwarm says the flue needs moving, which the others did not mention.\n\nDecide by the end of the month so the fitting happens before it gets cold.",
+      "comments": [
+        {
+          "author": "Sam",
+          "created": "2026-09-08T19:00:00Z",
+          "text": "Brightwarm's longer warranty might be worth the extra. See HOME-4 for what went wrong last time."
+        }
+      ]
+    },
+    {
+      "key": "HOME-18",
+      "summary": "Renew the home insurance",
+      "state": "Open",
+      "assignee": "robin",
+      "subsystem": "House",
+      "updated": "2026-09-09T09:00:00Z",
+      "description": "Renewal date is 30 September. The renewal letter quotes 412 pounds, up from 365.\n\nPolicy reference is HX-7730291-B. The online account login is in the password manager, not here.\n\nGet two comparison quotes before accepting."
+    },
+    {
+      "key": "HOME-20",
+      "summary": "Set up the talking kitchen scales",
+      "state": "Open",
+      "assignee": "robin",
+      "subsystem": "House",
+      "updated": "2026-09-08T14:00:00Z",
+      "description": "The scales arrived. The quick start guide is print only.\n\nThe manufacturer has an audio guide at https://scales.example.com/audio-guide.mp3 which should cover pairing.\n\nTo reset them, hold the `UNIT` and `TARE` buttons together for five seconds.",
+      "comments": []
+    },
+    {
+      "key": "HOME-21",
+      "summary": "Choose plants for the raised bed",
+      "state": "Submitted",
+      "assignee": "robin",
+      "subsystem": "Garden",
+      "updated": "2026-09-07T11:00:00Z",
+      "description": "Ideas so far:\n\n- Rosemary and thyme along the edge, for scent\n- Lamb's ear, for texture\n- Sweet peas up the trellis\n\nThe bed gets sun in the afternoon only."
+    },
+    {
+      "key": "HOME-22",
+      "summary": "Return the library audiobook players",
+      "state": "Open",
+      "assignee": "robin",
+      "subsystem": "Errands",
+      "updated": "2026-09-06T10:00:00Z",
+      "description": "Two players are due back on the 19th. The library is open until 1 pm on Saturdays."
+    },
+    {
+      "key": "HOME-23",
+      "summary": "Plan the allotment open day",
+      "state": "Open",
+      "assignee": "priya",
+      "subsystem": "Community",
+      "updated": "2026-09-05T17:00:00Z",
+      "description": "Saturday 26 September, 10 until 2. Robin is on the plant stall from 11.",
+      "comments": [
+        {"author": "Priya", "created": "2026-09-05T17:05:00Z", "text": "Robin, could you bring the spare seed trays?"}
+      ]
+    },
+    {
+      "key": "HOME-24",
+      "summary": "Fix the wobbly garden gate latch",
+      "state": "In Progress",
+      "assignee": "sam",
+      "subsystem": "Garden",
+      "updated": "2026-09-04T08:00:00Z",
+      "description": "The latch drops when the wind gets up. A replacement is on order."
+    },
+    {
+      "key": "HOME-25",
+      "summary": "Update the emergency contact list",
+      "state": "Open",
+      "assignee": "robin",
+      "subsystem": "House",
+      "updated": "2026-08-30T08:00:00Z",
+      "description": "### Who to add\n\nThe new GP surgery, and Priya as a neighbour key holder.\n\n### Where it lives\n\nThe list is taped inside the cupboard by the front door, and a copy is in the shared notes."
+    },
+    {
+      "key": "HOME-26",
+      "summary": "Write thank you cards after the recital",
+      "state": "Submitted",
+      "assignee": "robin",
+      "subsystem": "Music",
+      "updated": "2026-08-28T08:00:00Z",
+      "description": null
+    },
+    {
+      "key": "HOME-7",
+      "summary": "Cancel the old broadband contract",
+      "state": "Fixed",
+      "assignee": "robin",
+      "subsystem": "House",
+      "updated": "2026-08-20T08:00:00Z",
+      "description": "Done by phone. Reference 55120 for the cancellation.",
+      "comments": [{"author": "Robin", "created": "2026-08-20T08:05:00Z", "text": "Final bill arrives next month."}]
+    }
+  ]
+}

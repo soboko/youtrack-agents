@@ -1,0 +1,90 @@
+# Design rule 7: paging to the end of a capped list never says "End of the list".
+@generate 60
+> full answers
+< [earcon: success]
+< Full answers.
+> my issues
+< You have at least 50 issues.
+< One: Fix the login redirect loop. In Progress.
+< Two: Add dark mode to settings. Submitted.
+< Three: Write the onboarding guide. Open.
+< Four: Speed up search results. In Progress.
+< Five: Remove the old export button. Open.
+< Six: Calendar sync drops events. Open.
+< Seven: Update the privacy policy. Open.
+< Eight: Login emails arrive late. Open.
+< Nine: Generated task 1. Open.
+< Ten: Generated task 2. Open.
+< Eleven: Generated task 3. Open.
+< Twelve: Generated task 4. Open.
+< Thirteen: Generated task 5. Open.
+< Fourteen: Generated task 6. Open.
+< Fifteen: Generated task 7. Open.
+< Sixteen: Generated task 8. Open.
+< Seventeen: Generated task 9. Open.
+< Eighteen: Generated task 10. Open.
+< Nineteen: Generated task 11. Open.
+< Twenty: Generated task 12. Open.
+< At least 30 more. Say 'more' to hear them.
+> more
+< Issues 21 to 40 of at least 50.
+< Twenty-one: Generated task 13. Open.
+< Twenty-two: Generated task 14. Open.
+< Twenty-three: Generated task 15. Open.
+< Twenty-four: Generated task 16. Open.
+< Twenty-five: Generated task 17. Open.
+< Twenty-six: Generated task 18. Open.
+< Twenty-seven: Generated task 19. Open.
+< Twenty-eight: Generated task 20. Open.
+< Twenty-nine: Generated task 21. Open.
+< Thirty: Generated task 22. Open.
+< Thirty-one: Generated task 23. Open.
+< Thirty-two: Generated task 24. Open.
+< Thirty-three: Generated task 25. Open.
+< Thirty-four: Generated task 26. Open.
+< Thirty-five: Generated task 27. Open.
+< Thirty-six: Generated task 28. Open.
+< Thirty-seven: Generated task 29. Open.
+< Thirty-eight: Generated task 30. Open.
+< Thirty-nine: Generated task 31. Open.
+< Forty: Generated task 32. Open.
+< At least 10 more. Say 'more' to hear them.
+> more
+< Issues 41 to 50 of at least 50.
+< Forty-one: Generated task 33. Open.
+< Forty-two: Generated task 34. Open.
+< Forty-three: Generated task 35. Open.
+< Forty-four: Generated task 36. Open.
+< Forty-five: Generated task 37. Open.
+< Forty-six: Generated task 38. Open.
+< Forty-seven: Generated task 39. Open.
+< Forty-eight: Generated task 40. Open.
+< Forty-nine: Generated task 41. Open.
+< Fifty: Generated task 42. Open.
+< That's the first 50. Say 'find' and some words to narrow it down.
+@assert no-log warn voice.speech.overBudget
+> more
+< That's the first 50. Say 'find' and some words to narrow it down.
+> previous
+< Issues 21 to 40 of at least 50.
+< Twenty-one: Generated task 13. Open.
+< Twenty-two: Generated task 14. Open.
+< Twenty-three: Generated task 15. Open.
+< Twenty-four: Generated task 16. Open.
+< Twenty-five: Generated task 17. Open.
+< Twenty-six: Generated task 18. Open.
+< Twenty-seven: Generated task 19. Open.
+< Twenty-eight: Generated task 20. Open.
+< Twenty-nine: Generated task 21. Open.
+< Thirty: Generated task 22. Open.
+< Thirty-one: Generated task 23. Open.
+< Thirty-two: Generated task 24. Open.
+< Thirty-three: Generated task 25. Open.
+< Thirty-four: Generated task 26. Open.
+< Thirty-five: Generated task 27. Open.
+< Thirty-six: Generated task 28. Open.
+< Thirty-seven: Generated task 29. Open.
+< Thirty-eight: Generated task 30. Open.
+< Thirty-nine: Generated task 31. Open.
+< Forty: Generated task 32. Open.
+< At least 10 more. Say 'more' to hear them.

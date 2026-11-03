@@ -1,0 +1,50 @@
+# Design rule 7: honest counts. A capped list is "at least", never "all", on every path: page headers, "more", the
+# end of the list, "where am I", comments, and a single capped match.
+@generate 60
+> my issues
+< You have at least 50 issues.
+< One: Fix the login redirect loop.
+< Two: Add dark mode to settings.
+< Three: Write the onboarding guide.
+< Four: Speed up search results.
+< Five: Remove the old export button.
+< At least 45 more. Say 'more' to hear them.
+> more
+< Issues 6 to 10 of at least 50.
+< Six: Calendar sync drops events.
+< Seven: Update the privacy policy.
+< Eight: Login emails arrive late.
+< Nine: Generated task 1.
+< Ten: Generated task 2.
+< At least 40 more. Say 'more' to hear them.
+> where am i
+< You're in your issues, at least 50 issues.
+< You last heard 6 to 10.
+> open issues
+< There are at least 50 open issues.
+< One: Fix the login redirect loop.
+< Two: Add dark mode to settings.
+< Three: Write the onboarding guide.
+< Four: Speed up search results.
+< Five: Remove the old export button.
+< At least 45 more. Say 'more' to hear them.
+> open fifty
+< [earcon: success]
+< Number 50.
+< Generated task 41.
+< Open.
+< Say 'description', 'comments', or 'fields'.
+> open fifty one
+< [earcon: failure]
+< There's no number 51. I only have the first 50 issues.
+@cap 3
+> in progress issues
+< You have 2 issues in progress.
+< One: Fix the login redirect loop.
+< Two: Speed up search results.
+> find task
+< At least 3 issues match.
+< One: Generated task 1.
+< Two: Generated task 2.
+< Three: Generated task 3.
+< That's the first 3. Say 'find' and some words to narrow it down.

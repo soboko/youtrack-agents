@@ -1,0 +1,48 @@
+# Stage 3 and 4 intents are declared now and answer one consistent "not yet". "Yes" and "no" with nothing waiting
+# for an answer say there is nothing to confirm, "done" that there is nothing to finish, and none of these replaces
+# what "repeat" replays.
+> my issues
+< You have 8 issues.
+< One: Fix the login redirect loop.
+< Two: Add dark mode to settings.
+< Three: Write the onboarding guide.
+< Four: Speed up search results.
+< Five: Remove the old export button.
+< 3 more. Say 'more' to hear them.
+> open one
+< [earcon: success]
+< Number 1.
+< Fix the login redirect loop.
+< In Progress.
+< Say 'description', 'comments', or 'fields'.
+> comment
+< [earcon: failure]
+< I can't do that yet. For now I can only read issues.
+> comment this is done
+< [earcon: failure]
+< I can't do that yet. For now I can only read issues.
+> set state to fixed
+< [earcon: failure]
+< I can't do that yet. For now I can only read issues.
+> create an issue called buy milk
+< [earcon: failure]
+< I can't do that yet. For now I can only read issues.
+> dictate hello there
+< [earcon: failure]
+< I can't do that yet. For now I can only read issues.
+> yes
+< There's nothing to confirm.
+> no
+< There's nothing to confirm.
+> finished
+< There's nothing to finish.
+> done
+< There's nothing to finish.
+@intent confirm
+< There's nothing to confirm.
+> repeat
+< [earcon: success]
+< Number 1.
+< Fix the login redirect loop.
+< In Progress.
+< Say 'description', 'comments', or 'fields'.

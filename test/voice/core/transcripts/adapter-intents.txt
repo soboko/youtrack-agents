@@ -1,0 +1,54 @@
+# Adapters with their own language understanding send intents; slot values go through the same parsers, and values
+# that do not parse are treated as absent.
+@display on
+@intent list scope=in-progress
+< You have 2 issues in progress.
+< One: Fix the login redirect loop.
+< Two: Speed up search results.
+@assert card In progress
+@intent list scope="my"
+< You have 8 issues.
+< One: Fix the login redirect loop.
+< Two: Add dark mode to settings.
+< Three: Write the onboarding guide.
+< Four: Speed up search results.
+< Five: Remove the old export button.
+< 3 more. Say 'more' to hear them.
+@intent open ordinal=second
+< [earcon: success]
+< Number 2.
+< Add dark mode to settings.
+< Submitted.
+< Say 'description', 'comments', or 'fields'.
+@intent open ordinal=banana
+< Which one? Say 'open' and a number, like 'open one'.
+@intent openById spelled="yankee alpha two five"
+< [earcon: success]
+< Issue Y A 25.
+< Remove the old export button.
+< Open.
+< Say 'description', 'comments', or 'fields'.
+@intent read part=comments
+< This issue has no comments.
+@intent read part="details"
+< This issue has no description.
+@intent setVerbosity level=verbose
+< [earcon: success]
+< Full answers.
+@intent setRate rate=150
+< [earcon: success]
+< Speed 150 percent.
+@intent setRate rate=faster
+< [earcon: success]
+< Speed 175 percent.
+@intent more
+< This issue has no description.
+@intent where
+< You're in your issues, 8 issues.
+< Issue: Remove the old export button.
+< Reading the description.
+@intent stop
+< Goodbye.
+@assert listen false
+@end user
+< (silence)

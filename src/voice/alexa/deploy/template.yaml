@@ -1,0 +1,515 @@
+# YouTrack voice client: the Alexa custom skill's endpoint (YA-14). Personal use, development stage.
+#
+# Deploy material only. Nothing here has been deployed; creating these resources is Owner operates, asked for first
+# (docs/voice/alexa.md, runbook step 2). Build the code into .build/lambda next to this file before `sam deploy`.
+#
+# What it creates:
+#   - one Lambda function (arm64, Node.js 24), invokable only by the Alexa Skills Kit for one skill id;
+#   - one DynamoDB table for per-speaker state (on-demand billing, TTL on `expiresAt`, conditional versioned puts);
+#   - one log group with a retention period;
+#   - one IAM role that can write to that log group and GetItem/PutItem on that table, and nothing else.
+#
+# With LinkBroker=on (YA-33, docs/voice/alexa.md "Linking without the Alexa app"), also:
+#   - the OAuth link broker function `<stack>-link`, with a public Function URL (auth type NONE, no CORS);
+#   - a DynamoDB link table for pending flows and one-time codes (TTL on `expiresAt`), and its own log group;
+#   - a role that can write that log group, PutItem/DeleteItem on that table, GetParameter(s) on the six named SSM
+#     parameters under /youtrack-voice/link-broker/, and Decrypt through SSM for those parameters only.
+# With AirQuality=on (YA-36, docs/voice/alexa.md "Air quality"), also:
+#   - one IAM policy on the skill function's role: GetParameter on the one SSM parameter
+#     /youtrack-voice/purpleair/read-key, Decrypt through SSM for that parameter only, and geo-places:Geocode on
+#     Amazon Location's default place provider (the Places API needs no place index or other resource).
+# The SSM SecureString parameters are created by the Owner (runbook), never by this template: CloudFormation cannot
+# create SecureString values, and a secret must not appear in a template or a parameter.
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: YouTrack voice client - Alexa skill endpoint (YA-14)
+
+Parameters:
+  SkillId:
+    Type: String
+    Description: The skill id from the Alexa developer console (Build > Endpoint). Only this skill may invoke.
+    AllowedPattern: '^amzn1\.ask\.skill\.[0-9a-f-]+$'
+  EntryHandler:
+    Type: String
+    Description: The hello-world entry until integration with YA-13 and YA-15; then the full entry.
+    Default: voice/alexa/deploy/hello-entry.handler
+    AllowedValues:
+      - voice/alexa/deploy/hello-entry.handler
+      - voice/alexa/deploy/lambda-entry.handler
+  EnrolledPersonId:
+    Type: String
+    Description: The household member's personId for this skill (runbook step 6). Empty means nobody is `person`.
+    Default: ''
+  ReadAccepts:
+    Type: String
+    Description: >-
+      Evidence kinds that may read. Default person (Owner decision OD1 option A). person,account is option B and
+      also needs AccountTokenFallback=true; the function refuses to start otherwise.
+    Default: person
+    AllowedPattern: '^(person|account)(,(person|account))*$'
+  WriteAccepts:
+    Type: String
+    Description: Evidence kinds that may write (stage 3 onwards). Only person.
+    Default: person
+    AllowedValues: [person]
+  AccountTokenFallback:
+    Type: String
+    Description: >-
+      true lets a speaker with no person-level link use the Amazon account's linked token, as account evidence
+      (OD1 option B). false (default) refuses unrecognised voices and never uses the account-level token.
+    Default: 'false'
+    AllowedValues: ['false', 'true']
+  Cards:
+    Type: String
+    Description: on sends Simple cards (issue text) to screen devices and the Alexa app. off (default, OD2) sends none.
+    Default: 'off'
+    AllowedValues: ['off', 'on']
+  EnrolmentLog:
+    Type: String
+    Description: true logs the recognised personId at info, for the enrolment window of runbook step 6 only.
+    Default: 'false'
+    AllowedValues: ['false', 'true']
+  YouTrackBaseUrl:
+    Type: String
+    Description: >-
+      The instance the linked tokens belong to, e.g. https://example.youtrack.cloud. Required by the full entry, which
+      refuses to start without it; the hello entry ignores it. Never a token: tokens arrive per request by linking.
+    Default: ''
+    AllowedPattern: '^(https://[^\s/?#@]+(/[^\s?#@]*)?)?$'
+  YouTrackProject:
+    Type: String
+    Description: The project every voice query is scoped to. H (Household) by default; the household account sees only it.
+    Default: H
+    AllowedPattern: '^[A-Za-z][A-Za-z0-9_]*$'
+  HouseholdLogin:
+    Type: String
+    Description: >-
+      The dedicated household YouTrack account's login (not a secret). With AccountTokenFallback=true the full entry
+      requires it, and an account-level link to any other login is told to relink and reads nothing.
+    Default: ''
+    AllowedPattern: '^([A-Za-z0-9][A-Za-z0-9._@+-]*)?$'
+  LogLevel:
+    Type: String
+    Description: debug writes speech, slot values and Amazon ids. Use it only briefly (runbook step 6), then info.
+    Default: info
+    AllowedValues: [debug, info, warn, error]
+  LogRetentionDays:
+    Type: Number
+    Default: 30
+    AllowedValues: [1, 3, 5, 7, 14, 30, 60, 90]
+  StateTtlDays:
+    Type: Number
+    Description: A speaker's stored state is deleted this long after their last turn.
+    Default: 90
+    MinValue: 1
+    MaxValue: 365
+  LinkBroker:
+    Type: String
+    Description: on creates the OAuth link broker (YA-33). off (default) creates none of its resources.
+    Default: 'off'
+    AllowedValues: ['off', 'on']
+  YouTrackClientId:
+    Type: String
+    Description: The YouTrack OAuth client the link broker authorises as. Its secret is in SSM, never here.
+    Default: alexa-voice-client
+    AllowedPattern: '^[A-Za-z0-9._~-]+$'
+  YouTrackScope:
+    Type: String
+    Description: Space-separated scopes the link broker asks YouTrack for, the YouTrack service id and offline_access.
+    Default: ''
+    AllowedPattern: '^([\x21\x23-\x5B\x5D-\x7E]+( [\x21\x23-\x5B\x5D-\x7E]+)*)?$'
+  AlexaVendorId:
+    Type: String
+    Description: The Alexa vendor id; the link broker accepts only the three Alexa redirect URLs built from it.
+    Default: ''
+    AllowedPattern: '^([A-Z0-9]{8,20})?$'
+  HouseholdHubUserId:
+    Type: String
+    Description: >-
+      The Hub user id of the household YouTrack account (a UUID): the only account the link broker will link, compared
+      exactly with the signed-in user's ringId. Not a secret.
+    Default: ''
+    AllowedPattern: '^([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})?$'
+  LinkBrokerAuthorize:
+    Type: String
+    Description: >-
+      on serves the broker's /authorize (Alexa-initiated linking). off (default) refuses it: app-to-app linking through
+      /start never needs it, and while it is off nobody can start a link from an Alexa account (security review S1).
+    Default: 'off'
+    AllowedValues: ['off', 'on']
+  LinkBrokerSecretsEpoch:
+    Type: String
+    Description: >-
+      Change it (1, 2, 3, ...) after rotating an SSM secret the link broker reads at init (youtrack-client-secret,
+      broker-client-id, broker-client-secret). It is an environment variable only, so changing it replaces the
+      function's execution environments and each new one reads the rotated value.
+    Default: '1'
+    AllowedPattern: '^[0-9]{1,6}$'
+  SkillStage:
+    Type: String
+    Description: The skill stage the link broker's Skill Enablement API call links.
+    Default: development
+    AllowedValues: [development, live]
+  LinkBrokerOrigin:
+    Type: String
+    Description: >-
+      The broker's own Function URL origin (the LinkBrokerUrl output, without the trailing slash), pinned on a second
+      deploy. auto (default) takes the origin from each request's Function URL domain.
+    Default: auto
+    AllowedPattern: '^(auto|https://[a-z0-9]+\.lambda-url\.[a-z0-9-]+\.on\.aws)$'
+
+  AirQuality:
+    Type: String
+    Description: >-
+      on lets the skill answer air-quality questions from PurpleAir sensors (YA-36), with the read key from SSM
+      /youtrack-voice/purpleair/read-key. off (default) grants nothing, and the skill says air quality is not set up.
+    Default: 'off'
+    AllowedValues: ['off', 'on']
+  HomeLocation:
+    Type: String
+    Description: >-
+      Where "air quality" means when the device's postal code is not available: "latitude,longitude" (e.g.
+      46.87,-113.99) or a place name to geocode (e.g. Missoula, Montana). Empty (default) means no home fallback. Not a
+      secret, but it is a location: prefer a town-level point to the house itself.
+    Default: ''
+    MaxLength: 200
+    AllowedPattern: '^[^\x00-\x1f"]*$'
+  AddressConsentCard:
+    Type: String
+    Description: >-
+      on sends the Alexa app a card asking for the device's country and postal code when an air-quality question finds
+      the permission missing (YA-36). Leave off (default) until that permission is saved on the developer console's
+      Build > Permissions page: the card may only name a permission the skill declares.
+    Default: 'off'
+    AllowedValues: ['off', 'on']
+  IndoorSensorName:
+    Type: String
+    Description: Optional exact PurpleAir indoor sensor name for “air quality inside”.
+    Default: ''
+    MaxLength: 200
+    AllowedPattern: '^[^\x00-\x1f"]*$'
+  IndoorSensorIndex:
+    Type: String
+    Description: Optional stable PurpleAir indoor sensor_index; skips the name lookup.
+    Default: ''
+    AllowedPattern: '^$|^[1-9][0-9]{0,9}$'
+
+Conditions:
+  LinkBrokerOn: !Equals [!Ref LinkBroker, 'on']
+  AirQualityOn: !Equals [!Ref AirQuality, 'on']
+
+# With the link broker on, the values it cannot start without must be given, so a deploy fails before creating it.
+Rules:
+  LinkBrokerNeedsItsSettings:
+    RuleCondition: !Equals [!Ref LinkBroker, 'on']
+    Assertions:
+      - Assert: !Not [!Equals [!Ref YouTrackScope, '']]
+        AssertDescription: LinkBroker=on needs YouTrackScope (the YouTrack service id and offline_access).
+      - Assert: !Not [!Equals [!Ref AlexaVendorId, '']]
+        AssertDescription: LinkBroker=on needs AlexaVendorId.
+      - Assert: !Not [!Equals [!Ref YouTrackBaseUrl, '']]
+        AssertDescription: LinkBroker=on needs YouTrackBaseUrl.
+      - Assert: !Not [!Equals [!Ref HouseholdLogin, '']]
+        AssertDescription: LinkBroker=on needs HouseholdLogin.
+      - Assert: !Not [!Equals [!Ref HouseholdHubUserId, '']]
+        AssertDescription: LinkBroker=on needs HouseholdHubUserId, the only YouTrack account it will link.
+
+Resources:
+  StateTable:
+    Type: AWS::DynamoDB::Table
+    # State is a working set and preferences, cheap to lose and private: deleting the stack deletes it.
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
+    Properties:
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: userId
+          AttributeType: S
+      KeySchema:
+        - AttributeName: userId
+          KeyType: HASH
+      TimeToLiveSpecification:
+        AttributeName: expiresAt
+        Enabled: true
+
+  FunctionLogGroup:
+    Type: AWS::Logs::LogGroup
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
+    Properties:
+      # Lambda's default group name for the function below, created here so retention is set and the role
+      # needs no logs:CreateLogGroup.
+      LogGroupName: !Sub '/aws/lambda/${AWS::StackName}-alexa'
+      RetentionInDays: !Ref LogRetentionDays
+
+  FunctionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: write-own-logs
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                Resource: !GetAtt FunctionLogGroup.Arn
+        - PolicyName: read-write-own-state
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - dynamodb:GetItem
+                  - dynamodb:PutItem
+                Resource: !GetAtt StateTable.Arn
+
+  Function:
+    Type: AWS::Serverless::Function
+    DependsOn: FunctionLogGroup
+    Properties:
+      FunctionName: !Sub '${AWS::StackName}-alexa'
+      Description: Alexa custom skill endpoint for the YouTrack voice client (YA-14)
+      CodeUri: .build/lambda
+      Handler: !Ref EntryHandler
+      Runtime: nodejs24.x
+      Architectures: [arm64]
+      MemorySize: 512
+      # Alexa waits about 8 s. The handler answers by 7 s on its own; this only stops a stuck invocation.
+      Timeout: 8
+      Role: !GetAtt FunctionRole.Arn
+      Environment:
+        Variables:
+          SKILL_ID: !Ref SkillId
+          ENROLLED_PERSON_ID: !Ref EnrolledPersonId
+          READ_ACCEPTS: !Ref ReadAccepts
+          WRITE_ACCEPTS: !Ref WriteAccepts
+          ACCOUNT_TOKEN_FALLBACK: !Ref AccountTokenFallback
+          CARDS: !Ref Cards
+          ENROLMENT_LOG: !Ref EnrolmentLog
+          LOG_LEVEL: !Ref LogLevel
+          # The next five are read by the full entry (YA-15, lambda-entry.ts); the hello entry ignores them.
+          YOUTRACK_URL: !Ref YouTrackBaseUrl
+          YOUTRACK_PROJECT: !Ref YouTrackProject
+          HOUSEHOLD_LOGIN: !Ref HouseholdLogin
+          STATE_TABLE: !Ref StateTable
+          STATE_TTL_DAYS: !Ref StateTtlDays
+          # YA-36. The PurpleAir key is never here: the function reads it from SSM (AirQualityPolicy).
+          AIR_QUALITY: !Ref AirQuality
+          HOME_LOCATION: !Ref HomeLocation
+          ADDRESS_CONSENT_CARD: !Ref AddressConsentCard
+          INDOOR_SENSOR_NAME: !Ref IndoorSensorName
+          INDOOR_SENSOR_INDEX: !Ref IndoorSensorIndex
+
+  # ---- Air quality (YA-36), only with AirQuality=on -------------------------------------------------------------
+  # A separate policy attached to the skill function's role, so turning air quality on or off adds or removes this
+  # resource and leaves the role itself unchanged.
+  AirQualityPolicy:
+    Type: AWS::IAM::Policy
+    Condition: AirQualityOn
+    Properties:
+      PolicyName: air-quality-read-key-and-geocode
+      Roles:
+        - !Ref FunctionRole
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Action: ssm:GetParameter
+            Resource: !Sub 'arn:${AWS::Partition}:ssm:${AWS::Region}:${AWS::AccountId}:parameter/youtrack-voice/purpleair/read-key'
+          # The SecureString is under the default key (aws/ssm). Decrypt only when SSM asks on the function's behalf,
+          # and only for that one parameter (SSM puts the parameter ARN in the encryption context).
+          - Effect: Allow
+            Action: kms:Decrypt
+            Resource: !Sub 'arn:${AWS::Partition}:kms:${AWS::Region}:${AWS::AccountId}:key/*'
+            Condition:
+              StringEquals:
+                kms:ViaService: !Sub 'ssm.${AWS::Region}.amazonaws.com'
+                kms:EncryptionContext:PARAMETER_ARN: !Sub 'arn:${AWS::Partition}:ssm:${AWS::Region}:${AWS::AccountId}:parameter/youtrack-voice/purpleair/read-key'
+          # Places API v2 Geocode. Its resource is the AWS-managed provider, not something this stack creates.
+          # https://docs.aws.amazon.com/location/latest/developerguide/security-iam-awsmanpol.html
+          - Effect: Allow
+            Action: geo-places:Geocode
+            Resource: !Sub 'arn:${AWS::Partition}:geo-places:${AWS::Region}::provider/default'
+
+  # The Alexa Skills Kit trigger with skill id verification: only this skill can invoke the function.
+  # https://developer.amazon.com/en-US/docs/alexa/custom-skills/host-a-custom-skill-as-an-aws-lambda-function.html
+  AlexaSkillInvokePermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !GetAtt Function.Arn
+      Principal: alexa-appkit.amazon.com
+      EventSourceToken: !Ref SkillId
+
+  # ---- The OAuth link broker (YA-33), only with LinkBroker=on ----------------------------------------------------
+
+  LinkTable:
+    Type: AWS::DynamoDB::Table
+    Condition: LinkBrokerOn
+    # Pending flows and one-time codes, minutes long, sealed: nothing here is worth keeping past the stack.
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
+    Properties:
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      TimeToLiveSpecification:
+        AttributeName: expiresAt
+        Enabled: true
+
+  LinkFunctionLogGroup:
+    Type: AWS::Logs::LogGroup
+    Condition: LinkBrokerOn
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
+    Properties:
+      LogGroupName: !Sub '/aws/lambda/${AWS::StackName}-link'
+      RetentionInDays: 30
+
+  LinkFunctionRole:
+    Type: AWS::IAM::Role
+    Condition: LinkBrokerOn
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: write-own-logs
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                Resource: !GetAtt LinkFunctionLogGroup.Arn
+        - PolicyName: put-and-take-own-link-records
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - dynamodb:PutItem
+                  - dynamodb:DeleteItem
+                Resource: !GetAtt LinkTable.Arn
+        - PolicyName: read-own-secrets
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              # GetParameters reads the three token secrets at init in one call; GetParameter reads the setup key per
+              # /start request and the Login with Amazon client per flow (GetParameters). All on these six ARNs only.
+              - Effect: Allow
+                Action:
+                  - ssm:GetParameter
+                  - ssm:GetParameters
+                Resource:
+                  - !Sub 'arn:${AWS::Partition}:ssm:${AWS::Region}:${AWS::AccountId}:parameter/youtrack-voice/link-broker/youtrack-client-secret'
+                  - !Sub 'arn:${AWS::Partition}:ssm:${AWS::Region}:${AWS::AccountId}:parameter/youtrack-voice/link-broker/lwa-client-id'
+                  - !Sub 'arn:${AWS::Partition}:ssm:${AWS::Region}:${AWS::AccountId}:parameter/youtrack-voice/link-broker/lwa-client-secret'
+                  - !Sub 'arn:${AWS::Partition}:ssm:${AWS::Region}:${AWS::AccountId}:parameter/youtrack-voice/link-broker/broker-client-id'
+                  - !Sub 'arn:${AWS::Partition}:ssm:${AWS::Region}:${AWS::AccountId}:parameter/youtrack-voice/link-broker/broker-client-secret'
+                  - !Sub 'arn:${AWS::Partition}:ssm:${AWS::Region}:${AWS::AccountId}:parameter/youtrack-voice/link-broker/setup-key'
+              # SecureString parameters under the default key (aws/ssm). Decrypt only when SSM asks on the function's
+              # behalf, and only for a parameter under this path (SSM puts the parameter ARN in the encryption context).
+              - Effect: Allow
+                Action: kms:Decrypt
+                Resource: !Sub 'arn:${AWS::Partition}:kms:${AWS::Region}:${AWS::AccountId}:key/*'
+                Condition:
+                  StringEquals:
+                    kms:ViaService: !Sub 'ssm.${AWS::Region}.amazonaws.com'
+                  StringLike:
+                    kms:EncryptionContext:PARAMETER_ARN: !Sub 'arn:${AWS::Partition}:ssm:${AWS::Region}:${AWS::AccountId}:parameter/youtrack-voice/link-broker/*'
+
+  LinkFunction:
+    Type: AWS::Serverless::Function
+    Condition: LinkBrokerOn
+    DependsOn: LinkFunctionLogGroup
+    Properties:
+      FunctionName: !Sub '${AWS::StackName}-link'
+      Description: OAuth link broker for the YouTrack voice client's account linking (YA-33)
+      CodeUri: .build/lambda
+      Handler: voice/link-broker/deploy/entry.handler
+      Runtime: nodejs24.x
+      Architectures: [arm64]
+      # 1024 MB for about twice the CPU of 512 MB: a cold /token must answer Amazon within 4.5 s (review C4).
+      MemorySize: 1024
+      # /youtrack-callback waits on the Hub exchange and account check (5 s each at most), then the Skill Enablement
+      # API (9 s at most).
+      Timeout: 25
+      Role: !GetAtt LinkFunctionRole.Arn
+      Environment:
+        Variables:
+          YOUTRACK_URL: !Ref YouTrackBaseUrl
+          YOUTRACK_CLIENT_ID: !Ref YouTrackClientId
+          YOUTRACK_SCOPE: !Ref YouTrackScope
+          HOUSEHOLD_LOGIN: !Ref HouseholdLogin
+          HOUSEHOLD_HUB_USER_ID: !Ref HouseholdHubUserId
+          LINK_BROKER_AUTHORIZE: !Ref LinkBrokerAuthorize
+          SECRETS_EPOCH: !Ref LinkBrokerSecretsEpoch
+          SKILL_ID: !Ref SkillId
+          SKILL_STAGE: !Ref SkillStage
+          ALEXA_VENDOR_ID: !Ref AlexaVendorId
+          LINK_TABLE: !Ref LinkTable
+          SECRETS_PREFIX: /youtrack-voice/link-broker/
+          BROKER_ORIGIN: !Ref LinkBrokerOrigin
+          LOG_LEVEL: !Ref LogLevel
+
+  # The public HTTPS endpoint. Function URLs are HTTPS only. No Cors block: browsers get no CORS headers at all.
+  LinkFunctionUrl:
+    Type: AWS::Lambda::Url
+    Condition: LinkBrokerOn
+    Properties:
+      TargetFunctionArn: !GetAtt LinkFunction.Arn
+      AuthType: NONE
+      InvokeMode: BUFFERED
+
+  # Public invocation through the URL only. Since October 2025 a NONE-auth URL needs both actions; the second is
+  # limited to calls made through the Function URL.
+  # https://docs.aws.amazon.com/lambda/latest/dg/urls-auth.html
+  LinkFunctionUrlPermission:
+    Type: AWS::Lambda::Permission
+    Condition: LinkBrokerOn
+    Properties:
+      Action: lambda:InvokeFunctionUrl
+      FunctionName: !GetAtt LinkFunction.Arn
+      Principal: '*'
+      FunctionUrlAuthType: NONE
+
+  LinkFunctionInvokePermission:
+    Type: AWS::Lambda::Permission
+    Condition: LinkBrokerOn
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !GetAtt LinkFunction.Arn
+      Principal: '*'
+      InvokedViaFunctionUrl: true
+
+Outputs:
+  FunctionArn:
+    Description: Paste into the developer console, Build > Endpoint > AWS Lambda ARN (runbook step 3).
+    Value: !GetAtt Function.Arn
+  StateTableName:
+    Value: !Ref StateTable
+  LinkBrokerUrl:
+    Condition: LinkBrokerOn
+    Description: >-
+      The link broker's Function URL (ends with /). Its /authorize, /token, /youtrack-callback and /amazon-callback go into
+      the Alexa console, the YouTrack OAuth client and the Skill Enablement settings (runbook, YA-33).
+    Value: !GetAtt LinkFunctionUrl.FunctionUrl

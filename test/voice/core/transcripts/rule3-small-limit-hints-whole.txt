@@ -1,0 +1,23 @@
+# Design rule 3 at the smallest supported limit: a reply fits without cutting a word. A long state name and a long
+# title leave the hint whole.
+@maxchars 250
+@update YA-21 state=Waiting for a very long named state value here
+@update YA-21 summary=This summary goes on and on because someone pasted the whole bug report into the title field, including the steps to reproduce and the expected result
+> my issues
+< You have 8 issues.
+< One: This summary goes on and on because someone pasted the whole bug report into the title field, including the steps to
+< One, continued: reproduce and the expected result.
+< 7 more. Say 'more' to hear them.
+> open one
+< [earcon: success]
+< Number 1.
+< This summary goes on and on because someone pasted the whole bug report into the title field.
+< The title goes on. Say 'summary' to hear all of it.
+< Waiting for a very long named state value here.
+< Say 'description', 'comments', or 'fields'.
+@assert no-log warn voice.speech.overBudget
+> fields
+< State: Waiting for a very long named state value here.
+< Assigned to someone without a name in the tracker.
+< Subsystem: Accounts.
+< Updated on 12 September.

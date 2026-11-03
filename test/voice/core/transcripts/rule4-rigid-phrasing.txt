@@ -1,0 +1,52 @@
+# Design rule 4: rigid phrasing. The count comes before the list and the number before the summary, in the same
+# sentence shape for the same kind of answer.
+> my issues
+< You have 8 issues.
+< One: Fix the login redirect loop.
+< Two: Add dark mode to settings.
+< Three: Write the onboarding guide.
+< Four: Speed up search results.
+< Five: Remove the old export button.
+< 3 more. Say 'more' to hear them.
+> in progress issues
+< You have 2 issues in progress.
+< One: Fix the login redirect loop.
+< Two: Speed up search results.
+> open issues
+< There are 9 open issues.
+< One: Fix the login redirect loop.
+< Two: Add dark mode to settings.
+< Three: Write the onboarding guide.
+< Four: Speed up search results.
+< Five: Remove the old export button.
+< 4 more. Say 'more' to hear them.
+> recent issues
+< Here are the 10 most recently updated issues.
+< One: Fix the login redirect loop.
+< Two: Add dark mode to settings.
+< Three: Write the onboarding guide.
+< Four: Speed up search results.
+< Five: Remove the old export button.
+< 5 more. Say 'more' to hear them.
+> find calendar
+< [earcon: success]
+< 1 issue matches.
+< Number 1.
+< Calendar sync drops events.
+< Open.
+< Say 'description', 'comments', or 'fields'.
+> find the
+< What should I look for? Say 'find' and some words from the title.
+> find kangaroo
+< No issues match.
+< You're still in the matches for calendar.
+> find login
+< 2 issues match.
+< One: Fix the login redirect loop.
+< Two: Login emails arrive late.
+> open one
+< [earcon: success]
+< Number 1.
+< Fix the login redirect loop.
+< In Progress.
+< Say 'description', 'comments', or 'fields'.

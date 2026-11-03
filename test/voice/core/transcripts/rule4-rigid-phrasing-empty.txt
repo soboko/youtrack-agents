@@ -1,0 +1,16 @@
+# Design rule 4, the zero case: the same count-first shapes when there is nothing to count.
+@fixture empty
+> my issues
+< You have no issues.
+> in progress issues
+< You have no issues in progress.
+> open issues
+< There are no open issues.
+> recent issues
+< There are no issues.
+> open one
+< [earcon: failure]
+< There's no number 1. The list is empty.
+> find anything at all
+< No issues match.
+< You're still in the recent issues.

@@ -1,0 +1,37 @@
+# Design rule 5 and rule 1: a new list closes the open issue, because its number belonged to the old list. "Where am
+# I" never names a position from a list that has been replaced, and a part read never goes to an issue the person
+# has moved away from.
+> my issues
+< You have 8 issues.
+< One: Fix the login redirect loop.
+< Two: Add dark mode to settings.
+< Three: Write the onboarding guide.
+< Four: Speed up search results.
+< Five: Remove the old export button.
+< 3 more. Say 'more' to hear them.
+> open two
+< [earcon: success]
+< Number 2.
+< Add dark mode to settings.
+< Submitted.
+< Say 'description', 'comments', or 'fields'.
+> find login
+< 2 issues match.
+< One: Fix the login redirect loop.
+< Two: Login emails arrive late.
+> where am i
+< You're in the matches for login, 2 issues.
+< You last heard 1 to 2.
+> description
+< [earcon: failure]
+< No issue is open. Say 'open' and a number first.
+> open two
+< [earcon: success]
+< Number 2.
+< Login emails arrive late.
+< Open.
+< Say 'description', 'comments', or 'fields'.
+> where am i
+< You're in the matches for login, 2 issues.
+< Issue number 2: Login emails arrive late.
+< Nothing read from it yet.

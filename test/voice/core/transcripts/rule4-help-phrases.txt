@@ -1,0 +1,34 @@
+# Design rule 4: help only offers phrases the grammar accepts, and each does what help says. Said alone, "normal"
+# means normal answers; the speed is "normal speed".
+> help
+< You can say: 'my issues', 'issues for' and a name, 'air quality here', 'open' and a number, 'description', 'comments', 'more', 'previous', 'repeat', and 'where am I'.
+< To change how I talk, say 'brief', 'normal' or 'full', or 'faster', 'slower' or 'normal speed'. Say 'stop' to finish.
+> brief
+< [earcon: success]
+< Brief answers.
+> normal
+< [earcon: success]
+< Normal answers.
+> full
+< [earcon: success]
+< Full answers.
+> brief answers
+< [earcon: success]
+< Brief answers.
+> full answers
+< [earcon: success]
+< Full answers.
+> faster
+< [earcon: success]
+< Speed 125 percent.
+> slower
+< [earcon: success]
+< Speed 100 percent.
+> normal speed
+< [earcon: success]
+< Speed 100 percent.
+@assert rate 100
+> normal
+< [earcon: success]
+< Normal answers.
+@assert rate 100

@@ -1,0 +1,221 @@
+# YA-35: issues assigned to someone else, by name. Names come from the tracker's people with open issues, matched on
+# full name, first name or login, ignoring case, accents, possessives and fillers. Logins are never spoken.
+@fixture people
+# An exact full name reads that person's issues in the shape of "my issues".
+> what's assigned to chris coulter
+< Chris Coulter has 3 issues.
+< One: Fix the garden gate latch.
+< Two: Book the boiler service.
+< Three: Renew the parking permit.
+@assert reprompt Say 'open' and a number.
+# A first name that two people share is asked about, with numbered choices; "two" answers.
+> chris's issues
+< 2 people match Chris.
+< One: Chris Coulter.
+< Two: Chris Holloway.
+< Say the number of the one you mean.
+@assert reprompt Say the number of the one you mean, like 'one'.
+@assert calls-this-turn listAssignees 1
+@assert calls-this-turn listIssues 0
+> where am i
+< You're in the people who match Chris, 2 people.
+< You last heard 1 to 2.
+> open three
+< [earcon: failure]
+< There's no number 3. The list has 2.
+> two
+< Chris Holloway has 7 issues.
+< One: Paint the shed door.
+< Two: Clear the gutters.
+< Three: Sort the recycling rota.
+< Four: Replace the hall light bulb.
+< Five: Tune the bicycle brakes.
+< 2 more. Say 'more' to hear them.
+# Paging, and ordinals after the list, work as they do for "my issues".
+> more
+< [earcon: endOfList]
+< Issues 6 to 7 of 7.
+< Six: Plant the spring bulbs.
+< Seven: Mend the torn sofa cushion.
+< End of the list.
+> previous
+< Chris Holloway has 7 issues.
+< One: Paint the shed door.
+< Two: Clear the gutters.
+< Three: Sort the recycling rota.
+< Four: Replace the hall light bulb.
+< Five: Tune the bicycle brakes.
+< 2 more. Say 'more' to hear them.
+> open two
+< [earcon: success]
+< Number 2.
+< Clear the gutters.
+< Open.
+< Say 'description', 'comments', or 'fields'.
+> fields
+< State: Open.
+< Assigned to Chris Holloway.
+< Updated on 11 September.
+> where am i
+< You're in Chris Holloway's issues, 7 issues.
+< Issue number 2: Clear the gutters.
+< Reading the fields.
+# A first name only one person has; the accented name typed as written; a near miss from the recogniser.
+> issues for zoe
+< Zoë Ångström has 1 issue.
+< One: Label the fuse box.
+> what does Zoë have
+< Zoë Ångström has 1 issue.
+< One: Label the fuse box.
+# A near miss, a prefix or a surname is never taken on its own: the name is asked about first, and nothing is read
+# until the answer (review F4). Yes reads, no drops the question, and "one" answers like yes.
+> zoey's issues
+< Did you mean Zoë Ångström?
+@assert reprompt Say yes or no.
+@assert calls-this-turn listIssues 0
+> repeat
+< Did you mean Zoë Ångström?
+> yes
+< Zoë Ångström has 1 issue.
+< One: Label the fuse box.
+> issues for mark
+< Did you mean Mary Jones?
+@assert calls-this-turn listIssues 0
+> no
+< OK. Say 'issues for' and the name again.
+@assert calls-this-turn listIssues 0
+> yes
+< There's nothing to confirm.
+> show me chriss holloway's issues
+< Did you mean Chris Holloway?
+> one
+< Chris Holloway has 7 issues.
+< ...
+# Any other request drops the question, "help" and "where am I" included, and so does a new session (recheck R3): a
+# later "yes" answers nothing.
+> issues for jones
+< Did you mean Mary Jones?
+> help
+< You can say: 'my issues', 'issues for' and a name, 'air quality here', 'open' and a number, 'description', 'comments', 'more', 'previous', 'repeat', and 'where am I'.
+< ...
+@assert log info voice.person.checkDropped
+> yes
+< There's nothing to confirm.
+@assert calls-this-turn listIssues 0
+> issues for jones
+< Did you mean Mary Jones?
+> more
+< There's nothing to go on with. Say 'my issues' to start.
+> issues for jones
+< Did you mean Mary Jones?
+@end silence
+< (silence)
+@launch
+< Tracker ready. Say 'my issues', or 'help'.
+> yes
+< There's nothing to confirm.
+> issues for jones
+< Did you mean Mary Jones?
+@launch
+< Tracker ready. Say 'my issues', or 'help'.
+> one
+< [earcon: failure]
+< There's no list yet. Say 'my issues' to hear one.
+@assert calls-this-turn listIssues 0
+> issues for holloway
+< Did you mean Chris Holloway?
+> yes
+< Chris Holloway has 7 issues.
+< ...
+# A login works too, and is still never said back.
+> issues for ccoulter
+< Chris Coulter has 3 issues.
+< ...
+# Nobody by that name: said plainly, and the list being heard is kept. Priya's only issue is resolved.
+> issues for sam
+< [earcon: failure]
+< Nobody called Sam has open issues in this project.
+< You're still in Chris Coulter's issues.
+> open one
+< [earcon: success]
+< Number 1.
+< Fix the garden gate latch.
+< In Progress.
+< Say 'description', 'comments', or 'fields'.
+> what is priya working on
+< [earcon: failure]
+< Nobody called Priya has open issues in this project.
+< You're still in Chris Coulter's issues.
+> issues for the
+< Whose issues? Say 'issues for' and a name, like 'issues for Sam'.
+# "Me", "my" and "mine" keep today's meaning; "everyone" is the open issues; a scope said in a person's place is still
+# that scope; closed work is not listed (review F7).
+> issues for me
+< You have 2 issues.
+< One: Descale the kettle.
+< Two: Order more bin bags.
+> what's assigned to mine
+< You have 2 issues.
+< ...
+> issues for in progress
+< You have no issues in progress.
+> issues for everyone
+< There are 15 open issues.
+< ...
+> what's assigned to all
+< There are 15 open issues.
+< ...
+@intent list scope=closed
+< I can only list open issues. Say 'open issues' to hear them.
+# A runaway name is cut to its first six words before it is matched, echoed or stored (review F6).
+> issues for chris chris chris chris chris chris chris chris chris chris chris chris
+< 2 people match Chris Chris Chris Chris Chris Chris.
+< ...
+# "The household" is a name like any other.
+> what's assigned to the household
+< The Household has 2 issues.
+< One: Descale the kettle.
+< Two: Order more bin bags.
+# On Alexa the name arrives as a phrase, possessive included, or in the scope slot when Alexa files it there.
+@intent list person="Chris Holloway's"
+< Chris Holloway has 7 issues.
+< ...
+@intent list scope=zoe
+< Zoë Ångström has 1 issue.
+< One: Label the fuse box.
+@assert log info voice.intent.scopeAsPerson
+@intent list scope=open
+< There are 15 open issues.
+< ...
+# An interaction model from before YA-35 sends no person slot at all: the list intent behaves exactly as it did.
+@intent list
+< You have 2 issues.
+< One: Descale the kettle.
+< Two: Order more bin bags.
+@intent list scope=in-progress
+< You have no issues in progress.
+# A list of people to choose from expires like any list, and says how to hear it again.
+> issues for chris
+< 2 people match Chris.
+< ...
+@advance 13h
+> one
+< [earcon: failure]
+< That list has expired. Say 'issues for Chris' to hear it again.
+> issues for chris
+< 2 people match Chris.
+< ...
+> one
+< Chris Coulter has 3 issues.
+< ...
+@advance 13h
+> open one
+< [earcon: failure]
+< That list has expired. Say 'issues for Chris Coulter' to hear it again.
+# No login was ever spoken, in speech or a reprompt.
+@assert unspoken ccoulter
+@assert unspoken cholloway
+@assert unspoken zoe7
+@assert unspoken household1
+@assert unspoken pnair
+@assert unspoken mjones

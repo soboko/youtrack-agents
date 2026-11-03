@@ -1,0 +1,60 @@
+# Design rule 8: gating. Below readAccepts the core refuses to read, says why without saying what exists, and never
+# names another place to look.
+@evidence none
+@launch
+< [earcon: failure]
+< Tracker ready.
+< I can't read issues until I'm sure who's speaking.
+> my issues
+< [earcon: failure]
+< I can't read issues until I'm sure who's speaking.
+@assert log info voice.gate
+> open two
+< [earcon: failure]
+< I can't read issues until I'm sure who's speaking.
+> where am i
+< [earcon: failure]
+< I can't read issues until I'm sure who's speaking.
+> repeat
+< [earcon: failure]
+< I can't read issues until I'm sure who's speaking.
+> find login
+< [earcon: failure]
+< I can't read issues until I'm sure who's speaking.
+> open issue yankee alpha two one
+< [earcon: failure]
+< I can't read issues until I'm sure who's speaking.
+# Preferences and help reveal nothing, so they still work.
+> help
+< You can say: 'my issues', 'issues for' and a name, 'air quality here', 'open' and a number, 'description', 'comments', 'more', 'previous', 'repeat', and 'where am I'.
+< To change how I talk, say 'brief', 'normal' or 'full', or 'faster', 'slower' or 'normal speed'. Say 'stop' to finish.
+> faster
+< [earcon: success]
+< Speed 125 percent.
+# The account alone is not enough when policy asks for a recognised person.
+@policy person
+@evidence account
+> my issues
+< [earcon: failure]
+< I can't read issues until I'm sure who's speaking.
+@evidence person
+> my issues
+< You have 8 issues.
+< One: Fix the login redirect loop.
+< Two: Add dark mode to settings.
+< Three: Write the onboarding guide.
+< Four: Speed up search results.
+< Five: Remove the old export button.
+< 3 more. Say 'more' to hear them.
+> open one
+< [earcon: success]
+< Number 1.
+< Fix the login redirect loop.
+< In Progress.
+< Say 'description', 'comments', or 'fields'.
+# A different person on the same device has their own state, and is gated on their own evidence.
+@user test:account:household
+@evidence account
+> open one
+< [earcon: failure]
+< I can't read issues until I'm sure who's speaking.

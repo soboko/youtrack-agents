@@ -1,0 +1,15 @@
+# A version 1 position that does not agree with the content (the description changed since it was saved) restarts
+# the paragraph last heard: text may be heard twice, but none is skipped.
+@maxchars 300
+@corrupt-state {"version":1,"verbosity":"brief","ratePercent":100,"workingSet":null,"focus":{"key":"YA-21","summary":"Fix the login redirect loop","ordinal":null,"part":"description","pageStart":2,"pageEnd":3,"unitCount":3,"progress":{"current":1,"total":3,"complete":true}},"active":"issue","lastReply":null,"updatedAt":1789203600000}
+> where am i
+< Issue: Fix the login redirect loop.
+< Reading the description, paragraph 1 of 3.
+> more
+< Description, 3 paragraphs.
+< Paragraph 1 of 3.
+< After signing in, the page sends you back to the sign-in form. It happens on Safari only.
+< Say 'more' to go on.
+> more
+< Paragraph 2 of 3.
+< The redirect is set in auth/callback.ts. See the session notes and an issue for background.

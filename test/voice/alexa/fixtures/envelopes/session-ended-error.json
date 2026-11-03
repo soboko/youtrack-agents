@@ -1,0 +1,49 @@
+{
+  "version": "1.0",
+  "session": {
+    "new": false,
+    "sessionId": "amzn1.echo-api.session.SESSION1",
+    "application": {
+      "applicationId": "amzn1.ask.skill.00000000-1111-2222-3333-444444444444"
+    },
+    "user": {
+      "userId": "amzn1.ask.account.HOUSEHOLDACCOUNT",
+      "accessToken": "Atza|ACCOUNT-TOKEN-SECRET-2"
+    },
+    "attributes": {}
+  },
+  "context": {
+    "System": {
+      "application": {
+        "applicationId": "amzn1.ask.skill.00000000-1111-2222-3333-444444444444"
+      },
+      "user": {
+        "userId": "amzn1.ask.account.HOUSEHOLDACCOUNT",
+        "accessToken": "Atza|ACCOUNT-TOKEN-SECRET-2"
+      },
+      "device": {
+        "deviceId": "amzn1.ask.device.KITCHENECHO",
+        "supportedInterfaces": {
+          "AudioPlayer": {}
+        }
+      },
+      "apiEndpoint": "https://api.eu.amazonalexa.com",
+      "apiAccessToken": "API-ACCESS-TOKEN-SECRET-3",
+      "person": {
+        "personId": "amzn1.ask.person.ENROLLEDHOUSEHOLDMEMBER",
+        "accessToken": "Atza|PERSON-TOKEN-SECRET-1"
+      }
+    }
+  },
+  "request": {
+    "type": "SessionEndedRequest",
+    "requestId": "amzn1.echo-api.request.END2",
+    "timestamp": "2026-09-12T10:00:00Z",
+    "locale": "en-GB",
+    "reason": "ERROR",
+    "error": {
+      "type": "INVALID_RESPONSE",
+      "message": "An exception occurred while dispatching the request to the skill: secret summary text"
+    }
+  }
+}

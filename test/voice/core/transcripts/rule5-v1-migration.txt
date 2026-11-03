@@ -1,0 +1,27 @@
+# Design rule 5 across a state upgrade. A real version 1 state (written by 5ddda37) saved part-way through a split
+# paragraph resumes at the right piece: "more" reads the paragraph after it, never skips it, and never ends early.
+@maxchars 300
+@update YA-22 description=This first sentence is here to make the paragraph long enough to need splitting. The second sentence adds to it, with a few more words to be safe. The third sentence should land on a later piece. And a fourth sentence closes the paragraph for good measure.\n\nA short second paragraph.
+@load-state v1-mid-split-paragraph
+@launch
+< Welcome back.
+< You were reading the description of Add dark mode to settings.
+< Say 'more' to go on, or 'my issues'.
+> where am i
+< You're in your issues, 8 issues.
+< Issue number 2: Add dark mode to settings.
+< Reading the description, paragraph 1 of 2.
+> more
+< [earcon: endOfList]
+< Paragraph 2 of 2.
+< A short second paragraph.
+< End of the description.
+@assert log info voice.state.v1Resumed
+> previous
+< Paragraph 1 of 2, continued.
+< The third sentence should land on a later piece. And a fourth sentence closes the paragraph for good measure.
+> previous
+< Description, 2 paragraphs.
+< Paragraph 1 of 2.
+< This first sentence is here to make the paragraph long enough to need splitting. The second sentence adds to it, with a few more words to be safe.
+< Say 'more' to go on.

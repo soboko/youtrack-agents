@@ -1,0 +1,82 @@
+# Design rule 2: an id is never eaten as a filler. Project keys that sound like hesitations (MM, ER, UM, HM) open that
+# issue, never a list position, even when a list with that many items has just been read.
+@fixture keys
+> my issues
+< You have 15 issues.
+< One: Home chore number 1.
+< Two: Home chore number 2.
+< Three: Home chore number 3.
+< Four: Home chore number 4.
+< Five: Home chore number 5.
+< 10 more. Say 'more' to hear them.
+> open issue MM-12
+< [earcon: success]
+< Issue M M 12.
+< Printer bug the user asked for.
+< Open.
+< Say 'description', 'comments', or 'fields'.
+@assert calls-this-turn getIssue 1
+> open issue em em one two
+< [earcon: success]
+< Issue M M 12.
+< Printer bug the user asked for.
+< Open.
+< Say 'description', 'comments', or 'fields'.
+> issue mm twelve
+< [earcon: success]
+< Issue M M 12.
+< Printer bug the user asked for.
+< Open.
+< Say 'description', 'comments', or 'fields'.
+> open issue ER-5
+< [earcon: success]
+< Issue E R 5.
+< Error page wording.
+< Open.
+< Say 'description', 'comments', or 'fields'.
+> open issue um 4
+< [earcon: success]
+< Issue U M 4.
+< Umbrella stand by the door.
+< Open.
+< Say 'description', 'comments', or 'fields'.
+> go to issue HM-4
+< [earcon: success]
+< Issue H M 4.
+< Home maintenance plan.
+< Open.
+< Say 'description', 'comments', or 'fields'.
+# Typed ids need no carrier word in the text adapter.
+> er 5
+< [earcon: success]
+< Issue E R 5.
+< Error page wording.
+< Open.
+< Say 'description', 'comments', or 'fields'.
+> hm-4
+< [earcon: success]
+< Issue H M 4.
+< Home maintenance plan.
+< Open.
+< Say 'description', 'comments', or 'fields'.
+> open MM-12
+< [earcon: success]
+< Issue M M 12.
+< Printer bug the user asked for.
+< Open.
+< Say 'description', 'comments', or 'fields'.
+# A hesitation that is not in front of a number is still ignored.
+> um, open twelve
+< [earcon: success]
+< Number 12.
+< Home chore number 12.
+< Open.
+< Say 'description', 'comments', or 'fields'.
+> uh, where am i
+< You're in your issues, 15 issues.
+< Issue number 12: Home chore number 12.
+< Nothing read from it yet.
+# "Issue 12" is an id with its letters missing, not number 12.
+> open issue 12
+< I couldn't make an id out of that. Spell the letters, then the number, like 'yankee alpha one three'.
+@assert calls-this-turn getIssue 0

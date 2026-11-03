@@ -1,0 +1,128 @@
+# Design rule 7: a capped comment list is "at least" in its lead, its headers and "where am I", and its last page
+# never says "End of the comments".
+@fixture comments
+> my issues
+< You have 1 issue.
+< One: A long discussion.
+> open one
+< [earcon: success]
+< Number 1.
+< A long discussion.
+< Open.
+< Say 'description', 'comments', or 'fields'.
+> full answers
+< [earcon: success]
+< Full answers.
+> comments
+< At least 50 comments.
+< Comment 1 of at least 50, from Ana, on 1 September.
+< Comment body 1.
+< Comment 2 of at least 50, from Ana, on 2 September.
+< Comment body 2.
+< Comment 3 of at least 50, from Ana, on 3 September.
+< Comment body 3.
+< Comment 4 of at least 50, from Ana, on 4 September.
+< Comment body 4.
+< Comment 5 of at least 50, from Ana, on 5 September.
+< Comment body 5.
+< Comment 6 of at least 50, from Ana, on 6 September.
+< Comment body 6.
+< Comment 7 of at least 50, from Ana, on 7 September.
+< Comment body 7.
+< Comment 8 of at least 50, from Ana, on 8 September.
+< Comment body 8.
+< Comment 9 of at least 50, from Ana, on 9 September.
+< Comment body 9.
+< Comment 10 of at least 50, from Ana, on 1 September.
+< Comment body 10.
+< Comment 11 of at least 50, from Ana, on 2 September.
+< Comment body 11.
+< Comment 12 of at least 50, from Ana, on 3 September.
+< Comment body 12.
+< Comment 13 of at least 50, from Ana, on 4 September.
+< Comment body 13.
+< Comment 14 of at least 50, from Ana, on 5 September.
+< Comment body 14.
+< Say 'more' to go on.
+> more
+< Comment 15 of at least 50, from Ana, on 6 September.
+< Comment body 15.
+< Comment 16 of at least 50, from Ana, on 7 September.
+< Comment body 16.
+< Comment 17 of at least 50, from Ana, on 8 September.
+< Comment body 17.
+< Comment 18 of at least 50, from Ana, on 9 September.
+< Comment body 18.
+< Comment 19 of at least 50, from Ana, on 1 September.
+< Comment body 19.
+< Comment 20 of at least 50, from Ana, on 2 September.
+< Comment body 20.
+< Comment 21 of at least 50, from Ana, on 3 September.
+< Comment body 21.
+< Comment 22 of at least 50, from Ana, on 4 September.
+< Comment body 22.
+< Comment 23 of at least 50, from Ana, on 5 September.
+< Comment body 23.
+< Comment 24 of at least 50, from Ana, on 6 September.
+< Comment body 24.
+< Comment 25 of at least 50, from Ana, on 7 September.
+< Comment body 25.
+< Comment 26 of at least 50, from Ana, on 8 September.
+< Comment body 26.
+< Comment 27 of at least 50, from Ana, on 9 September.
+< Comment body 27.
+< Comment 28 of at least 50, from Ana, on 1 September.
+< Comment body 28.
+> where am i
+< You're in your issues, 1 issue.
+< Issue number 1: A long discussion.
+< Reading the comments, comment 28 of at least 50.
+> more
+< Comment 29 of at least 50, from Ana, on 2 September.
+< Comment body 29.
+< Comment 30 of at least 50, from Ana, on 3 September.
+< Comment body 30.
+< Comment 31 of at least 50, from Ana, on 4 September.
+< Comment body 31.
+< Comment 32 of at least 50, from Ana, on 5 September.
+< Comment body 32.
+< Comment 33 of at least 50, from Ana, on 6 September.
+< Comment body 33.
+< Comment 34 of at least 50, from Ana, on 7 September.
+< Comment body 34.
+< Comment 35 of at least 50, from Ana, on 8 September.
+< Comment body 35.
+< Comment 36 of at least 50, from Ana, on 9 September.
+< Comment body 36.
+< Comment 37 of at least 50, from Ana, on 1 September.
+< Comment body 37.
+< Comment 38 of at least 50, from Ana, on 2 September.
+< Comment body 38.
+< Comment 39 of at least 50, from Ana, on 3 September.
+< Comment body 39.
+< Comment 40 of at least 50, from Ana, on 4 September.
+< Comment body 40.
+< Comment 41 of at least 50, from Ana, on 5 September.
+< Comment body 41.
+< Comment 42 of at least 50, from Ana, on 6 September.
+< Comment body 42.
+> more
+< Comment 43 of at least 50, from Ana, on 7 September.
+< Comment body 43.
+< Comment 44 of at least 50, from Ana, on 8 September.
+< Comment body 44.
+< Comment 45 of at least 50, from Ana, on 9 September.
+< Comment body 45.
+< Comment 46 of at least 50, from Ana, on 1 September.
+< Comment body 46.
+< Comment 47 of at least 50, from Ana, on 2 September.
+< Comment body 47.
+< Comment 48 of at least 50, from Ana, on 3 September.
+< Comment body 48.
+< Comment 49 of at least 50, from Ana, on 4 September.
+< Comment body 49.
+< Comment 50 of at least 50, from Ana, on 5 September.
+< Comment body 50.
+< That's the first 50 comments.
+> more
+< That's the first 50 comments.

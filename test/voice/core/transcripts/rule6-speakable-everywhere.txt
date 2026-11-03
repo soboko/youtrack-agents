@@ -1,0 +1,48 @@
+# Design rule 6 for every tracker string, not only descriptions: summaries, states, assignees, subsystems and comment
+# authors are made speakable in lists, on open, in "where am I", in fields, in comments and on launch.
+@fixture messy
+@timezone Europe/London
+> normal answers
+< [earcon: success]
+< Normal answers.
+> my issues
+< You have 1 issue.
+< One: Rotate a long code after an issue. Open.
+> open issue yankee alpha four zero
+< [earcon: success]
+< Issue Y A 40.
+< Fix auth/callback.ts per an issue, see a link and now.
+< In Progress.
+< Say 'description', 'comments', or 'fields'.
+> where am i
+< You're in your issues, 1 issue.
+< Issue: Fix auth/callback.ts per an issue, see a link and now.
+< Nothing read from it yet.
+> fields
+< State: In Progress.
+< Assigned to someone without a name in the tracker.
+< Subsystem: Accounts.
+< Updated yesterday.
+> comments
+< 2 comments.
+< Comment 1 of 2, from Ana, yesterday.
+< Token a long code leaked, see a link.
+< Say 'more' to go on.
+> more
+< [earcon: endOfList]
+< Comment 2 of 2, from someone without a name in the tracker, yesterday.
+< Fixed it in main.
+< End of the comments.
+@end silence
+< (silence)
+@launch
+< Welcome back.
+< You were reading the comments of Fix auth/callback.ts per an issue, see a link and now.
+< Say 'more' to go on, or 'my issues'.
+> find auth callback
+< [earcon: success]
+< 1 issue matches.
+< Number 1.
+< Fix auth/callback.ts per an issue, see a link and now.
+< In Progress.
+< Say 'description', 'comments', or 'fields'.

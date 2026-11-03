@@ -1,0 +1,134 @@
+# YA-35 review F1 and F3: no login or email is ever spoken. A tracker full name that is the login (any case), an email
+# address, or blank is no name: the fields say so, those people cannot be named, a login said aloud is not repeated
+# back, and "nobody called" is never claimed while someone could not be checked by name.
+@fixture people-unnamed
+> open issues
+< There are 11 open issues.
+< ...
+> open two
+< [earcon: success]
+< Number 2.
+< Fix the garden gate latch.
+< Open.
+< Say 'description', 'comments', or 'fields'.
+> fields
+< State: Open.
+< Assigned to someone without a name in the tracker.
+< Updated on 12 September.
+> open three
+< [earcon: success]
+< ...
+> fields
+< State: Open.
+< Assigned to someone without a name in the tracker.
+< Updated on 12 September.
+> open four
+< [earcon: success]
+< ...
+> fields
+< State: Open.
+< Assigned to someone without a name in the tracker.
+< Updated on 12 September.
+# No full name in the tracker at all.
+> open five
+< [earcon: success]
+< ...
+> fields
+< State: Open.
+< Assigned to someone without a name in the tracker.
+< Updated on 12 September.
+> open six
+< [earcon: success]
+< ...
+> fields
+< State: Open.
+< Assigned to Mary Jones.
+< Updated on 12 September.
+> issues for ccoulter
+< [earcon: failure]
+< I couldn't find anyone by that name, but I can't name everyone in this project.
+< You're still in the open issues.
+@intent list person="CCoulter's"
+< [earcon: failure]
+< I couldn't find anyone by that name, but I can't name everyone in this project.
+< You're still in the open issues.
+> issues for sam
+< [earcon: failure]
+< I couldn't find anyone by that name, but I can't name everyone in this project.
+< You're still in the open issues.
+> issues for jo
+< [earcon: failure]
+< I couldn't find anyone called Jo, but I can't name everyone in this project.
+< You're still in the open issues.
+> issues for mary
+< Mary Jones has 1 issue.
+< One: Water the window boxes.
+# Login- and email-shaped full names that are not the login itself (recheck R1): "jo.bloggs", "pnair Priya", "j_smith",
+# "chris2", and a name with an email in it.
+> issues for jo bloggs
+< [earcon: failure]
+< I couldn't find anyone by that name, but I can't name everyone in this project.
+< ...
+> issues for priya
+< [earcon: failure]
+< I couldn't find anyone called Priya, but I can't name everyone in this project.
+< ...
+> issues for kim lee
+< [earcon: failure]
+< I couldn't find anyone called Kim Lee, but I can't name everyone in this project.
+< ...
+> open issues
+< There are 11 open issues.
+< ...
+> more
+< Issues 6 to 10 of 11.
+< ...
+> open seven
+< [earcon: success]
+< Number 7.
+< Clean the oven.
+< ...
+> fields
+< State: Open.
+< Assigned to someone without a name in the tracker.
+< Updated on 11 September.
+> open eight
+< [earcon: success]
+< ...
+> fields
+< State: Open.
+< Assigned to someone without a name in the tracker.
+< Updated on 11 September.
+> open nine
+< [earcon: success]
+< ...
+> fields
+< State: Open.
+< Assigned to someone without a name in the tracker.
+< Updated on 11 September.
+> open ten
+< [earcon: success]
+< ...
+> fields
+< State: Open.
+< Assigned to someone without a name in the tracker.
+< Updated on 11 September.
+> open eleven
+< [earcon: success]
+< ...
+> fields
+< State: Open.
+< Assigned to someone without a name in the tracker.
+< Updated on 11 September.
+@assert unspoken jo.bloggs
+@assert unspoken pnair
+@assert unspoken j_smith
+@assert unspoken chris2
+@assert unspoken kim.lee
+@assert unspoken ccoulter
+@assert unspoken jbloggs
+@assert unspoken jo.bloggs
+@assert unspoken example.com
+@assert unspoken @
+@assert unspoken nolabel
+@assert unspoken sam

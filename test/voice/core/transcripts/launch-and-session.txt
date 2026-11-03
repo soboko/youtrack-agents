@@ -1,0 +1,36 @@
+# Launch gives a short orientation; a closed session saves state and says nothing.
+@launch
+< Tracker ready. Say 'my issues', or 'help'.
+@assert listen true
+> my issues
+< You have 8 issues.
+< One: Fix the login redirect loop.
+< Two: Add dark mode to settings.
+< Three: Write the onboarding guide.
+< Four: Speed up search results.
+< Five: Remove the old export button.
+< 3 more. Say 'more' to hear them.
+@end silence
+< (silence)
+@assert listen false
+@launch
+< Welcome back.
+< Say 'more' to go on with your list, or 'my issues' to start again.
+> open two
+< [earcon: success]
+< Number 2.
+< Add dark mode to settings.
+< Submitted.
+< Say 'description', 'comments', or 'fields'.
+@end user
+< (silence)
+@launch
+< Welcome back.
+< You had Add dark mode to settings open.
+< Say 'more' to go on, or 'my issues'.
+> cancel
+< OK.
+@assert listen false
+> stop
+< Goodbye.
+@assert listen false

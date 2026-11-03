@@ -1,0 +1,36 @@
+# Design rule 7: a cap of one is still honest, and still grammatical. A single match from a capped search is a list
+# of one, not an issue opened as if it were the only one.
+@generate 5
+@cap 1
+@cap-comments 1
+> my issues
+< You have at least 1 issue.
+< One: Fix the login redirect loop.
+< That's the first one. Say 'find' and some words to narrow it down.
+> more
+< That's the first one. Say 'find' and some words to narrow it down.
+> open issues
+< There is at least 1 open issue.
+< One: Fix the login redirect loop.
+< That's the first one. Say 'find' and some words to narrow it down.
+> find task
+< At least 1 issue matches.
+< One: Generated task 1.
+< That's the first one. Say 'find' and some words to narrow it down.
+> in progress issues
+< You have at least 1 issue in progress.
+< One: Fix the login redirect loop.
+< That's the first one. Say 'find' and some words to narrow it down.
+> open one
+< [earcon: success]
+< Number 1.
+< Fix the login redirect loop.
+< In Progress.
+< Say 'description', 'comments', or 'fields'.
+> comments
+< At least 1 comment.
+< Comment 1 of at least 1, from Ana, on 11 September.
+< I can reproduce this on my phone too.
+< That's the first comment.
+> more
+< That's the first comment.

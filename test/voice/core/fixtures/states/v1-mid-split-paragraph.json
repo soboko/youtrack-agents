@@ -1,0 +1,44 @@
+{
+  "version": 1,
+  "verbosity": "brief",
+  "ratePercent": 100,
+  "workingSet": {
+    "source": {"kind": "scope", "scope": "mine"},
+    "items": [
+      {"key": "YA-21", "summary": "Fix the login redirect loop", "state": "In Progress"},
+      {"key": "YA-22", "summary": "Add dark mode to settings", "state": "Submitted"},
+      {"key": "YA-23", "summary": "Write the onboarding guide", "state": "Open"},
+      {"key": "YA-24", "summary": "Speed up search results", "state": "In Progress"},
+      {"key": "YA-25", "summary": "Remove the old export button", "state": "Open"},
+      {"key": "YA-26", "summary": "Calendar sync drops events", "state": "Open"},
+      {"key": "YA-27", "summary": "Update the privacy policy", "state": "Open"},
+      {"key": "YA-28", "summary": "Login emails arrive late", "state": "Open"}
+    ],
+    "complete": true,
+    "capturedAt": 1789203600000,
+    "pageStart": 0,
+    "pageEnd": 5
+  },
+  "focus": {
+    "key": "YA-22",
+    "summary": "Add dark mode to settings",
+    "ordinal": 2,
+    "part": "description",
+    "pageStart": 1,
+    "pageEnd": 2,
+    "unitCount": 3,
+    "progress": {"current": 1, "total": 2, "complete": true}
+  },
+  "active": "issue",
+  "lastReply": {
+    "segments": [
+      {"text": "Paragraph 1 of 2, continued.", "pauseAfter": "short"},
+      {
+        "text": "The third sentence should land on a later piece. And a fourth sentence closes the paragraph for good measure.",
+        "pauseAfter": "long"
+      }
+    ],
+    "reprompt": [{"text": "Say 'more' to go on."}]
+  },
+  "updatedAt": 1789203600000
+}

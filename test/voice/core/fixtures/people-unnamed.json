@@ -1,0 +1,94 @@
+{
+  "me": "household1",
+  "people": {
+    "household1": "The Household",
+    "ccoulter": "ccoulter",
+    "jbloggs": "jo.bloggs@example.com",
+    "sam": "   ",
+    "mjones": "Mary Jones",
+    "jbl": "jo.bloggs",
+    "pnair": "pnair Priya",
+    "jsm": "j_smith",
+    "chrisx": "chris2",
+    "klee": "Kim Lee kim.lee@example.com"
+  },
+  "issues": [
+    {
+      "key": "H-1",
+      "summary": "Descale the kettle",
+      "state": "Open",
+      "assignee": "household1",
+      "updated": "2026-09-12T08:00:00Z"
+    },
+    {
+      "key": "H-2",
+      "summary": "Fix the garden gate latch",
+      "state": "Open",
+      "assignee": "ccoulter",
+      "updated": "2026-09-12T07:00:00Z"
+    },
+    {
+      "key": "H-3",
+      "summary": "Wash the car",
+      "state": "Open",
+      "assignee": "jbloggs",
+      "updated": "2026-09-12T06:00:00Z"
+    },
+    {
+      "key": "H-4",
+      "summary": "Sweep the path",
+      "state": "Open",
+      "assignee": "sam",
+      "updated": "2026-09-12T05:00:00Z"
+    },
+    {
+      "key": "H-5",
+      "summary": "Mow the lawn",
+      "state": "Open",
+      "assignee": "nolabel",
+      "updated": "2026-09-12T04:00:00Z"
+    },
+    {
+      "key": "H-6",
+      "summary": "Water the window boxes",
+      "state": "Open",
+      "assignee": "mjones",
+      "updated": "2026-09-12T03:00:00Z"
+    },
+    {
+      "key": "H-7",
+      "summary": "Clean the oven",
+      "state": "Open",
+      "assignee": "jbl",
+      "updated": "2026-09-11T08:00:00Z"
+    },
+    {
+      "key": "H-8",
+      "summary": "Fix the fence",
+      "state": "Open",
+      "assignee": "pnair",
+      "updated": "2026-09-11T07:00:00Z"
+    },
+    {
+      "key": "H-9",
+      "summary": "Bleed the radiators",
+      "state": "Open",
+      "assignee": "jsm",
+      "updated": "2026-09-11T06:00:00Z"
+    },
+    {
+      "key": "H-10",
+      "summary": "Oil the hinges",
+      "state": "Open",
+      "assignee": "chrisx",
+      "updated": "2026-09-11T05:00:00Z"
+    },
+    {
+      "key": "H-11",
+      "summary": "Tidy the loft",
+      "state": "Open",
+      "assignee": "klee",
+      "updated": "2026-09-11T04:00:00Z"
+    }
+  ]
+}

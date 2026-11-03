@@ -1,0 +1,33 @@
+{
+  "me": "sam",
+  "issues": [
+    {
+      "key": "YA-40",
+      "summary": "Fix `auth/callback.ts` per YA-18, see https://x.example/a?token=abc123 and **now**",
+      "state": "`In Progress`",
+      "assignee": "@sam_b",
+      "subsystem": "**Accounts**",
+      "updated": "2026-09-11T10:00:00Z",
+      "description": "Short description.",
+      "comments": [
+        {
+          "author": "**Ana**",
+          "created": "2026-09-11T11:00:00Z",
+          "text": "Token ghp_16C7e42F292c6912E7710c838347Ae178B4a leaked, see <https://a.example/x>."
+        },
+        {
+          "author": "@ana_b",
+          "created": "2026-09-11T12:00:00Z",
+          "text": "_Fixed_ it in `main`."
+        }
+      ]
+    },
+    {
+      "key": "YA-41",
+      "summary": "Rotate ghp_16C7e42F292c6912E7710c838347Ae178B4a after OPS-3",
+      "state": "Open",
+      "assignee": "sam",
+      "updated": "2026-09-10T10:00:00Z"
+    }
+  ]
+}

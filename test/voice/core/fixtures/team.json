@@ -1,0 +1,88 @@
+{
+  "me": "sam",
+  "issues": [
+    {
+      "key": "YA-21",
+      "summary": "Fix the login redirect loop",
+      "state": "In Progress",
+      "assignee": "sam",
+      "subsystem": "Accounts",
+      "updated": "2026-09-12T08:00:00Z",
+      "description": "After signing in, the page sends you back to the sign-in form. It happens on **Safari** only.\n\nThe redirect is set in `auth/callback.ts`. See [the session notes](https://wiki.example/sessions) and YA-18 for background.\n\nNext step: reproduce it with a fresh profile.",
+      "comments": [
+        {"author": "Ana", "created": "2026-09-11T14:00:00Z", "text": "I can reproduce this on my phone too."},
+        {
+          "author": "Chris",
+          "created": "2026-09-12T07:30:00Z",
+          "text": "Cookies were blocked. Try again with them allowed."
+        }
+      ]
+    },
+    {
+      "key": "YA-22",
+      "summary": "Add dark mode to settings",
+      "state": "Submitted",
+      "assignee": "sam",
+      "updated": "2026-09-11T08:00:00Z",
+      "description": "Use the system setting by default."
+    },
+    {
+      "key": "YA-23",
+      "summary": "Write the onboarding guide",
+      "state": "Open",
+      "assignee": "sam",
+      "updated": "2026-09-10T08:00:00Z",
+      "description": "# Setup\nInstall the app from https://example.com/download?ref=guide first.\n\n| Step | Who |\n| --- | --- |\n| Install | Sam |\n| Sign in | Ana |\n| Tour | Sam |\n\n```sh\nnpm install\nnpm start\n```\n\n- Pick a theme\n- Invite the team\n\nThe token is ghp_16C7e42F292c6912E7710c838347Ae178B4a and must never be shared."
+    },
+    {
+      "key": "YA-24",
+      "summary": "Speed up search results",
+      "state": "In Progress",
+      "assignee": "sam",
+      "updated": "2026-09-09T08:00:00Z",
+      "description": null
+    },
+    {
+      "key": "YA-25",
+      "summary": "Remove the old export button",
+      "state": "Open",
+      "assignee": "sam",
+      "updated": "2026-09-08T08:00:00Z"
+    },
+    {
+      "key": "YA-26",
+      "summary": "Calendar sync drops events",
+      "state": "Open",
+      "assignee": "sam",
+      "updated": "2026-09-07T08:00:00Z"
+    },
+    {
+      "key": "YA-27",
+      "summary": "Update the privacy policy",
+      "state": "Open",
+      "assignee": "sam",
+      "updated": "2026-08-20T08:00:00Z"
+    },
+    {
+      "key": "YA-28",
+      "summary": "Login emails arrive late",
+      "state": "Open",
+      "assignee": "sam",
+      "updated": "2026-08-15T08:00:00Z"
+    },
+    {
+      "key": "YA-30",
+      "summary": "Plan the team offsite",
+      "state": "Open",
+      "assignee": "ana",
+      "updated": "2026-09-06T08:00:00Z"
+    },
+    {
+      "key": "YA-31",
+      "summary": "Billing page typo",
+      "state": "Fixed",
+      "assignee": "sam",
+      "updated": "2026-09-05T08:00:00Z"
+    }
+  ]
+}

@@ -1,0 +1,141 @@
+# YA-36: "air quality in" a place or a sensor's name, resolved near the household (home is Missoula). Every phrasing
+# of the answer.
+@evidence none
+@home 46.87,-113.99
+
+# Seven outdoor sensors within 5 km. A stale one, one with no humidity and a barbecue-sized outlier are set aside. The
+# sensor names near home are fetched once (names only), then the area.
+> what's the air quality in Missoula
+< Air quality near Missoula is Moderate.
+< AQI 64, from 7 PurpleAir sensors within 5 kilometres, updated 3 minutes ago.
+< Unusually sensitive people should consider making outdoor activities shorter and less intense.
+@assert air-calls-this-turn purpleair 2
+
+# One sensor within 5 km, so the radius is widened once, to 15 km, and merged; two sensors is still few, and it says so.
+> how's the air in Seeley Lake
+< Air quality near Seeley Lake is Moderate.
+< AQI 51, from 2 PurpleAir sensors within 15 kilometres, updated 3 minutes ago.
+< With so few sensors, take it as a rough guide.
+< Unusually sensitive people should consider making outdoor activities shorter and less intense.
+@assert air-calls-this-turn purpleair 2
+
+> air quality in Polson
+< The newest reading near Polson is 45 minutes old.
+< That's too old to give a current reading.
+
+# More than 300 km from home: said by the place's own name.
+> air quality near Jordan
+< No outdoor sensors are reporting within 15 kilometres of Jordan.
+
+# One sensor in Hamilton reads far worse than the three a few kilometres out (a second, whose channels disagree, is set
+# aside). Neither is picked silently: the worse leads, both are said, and it is a rough guide. The town's state is
+# said, because the home here is a point with no known state.
+> air quality in Hamilton
+< Air quality near Hamilton, Montana is Unhealthy for sensitive groups.
+< Readings nearby disagree: AQI 135 from 1 sensor, and AQI 27 from 3 others, updated 3 minutes ago.
+< Take it as a rough guide.
+< People with heart or lung disease, older adults, children and teenagers should make outdoor activities shorter and less intense.
+
+# Wildfire smoke: the extended correction, and the top of the index.
+> what's the air like in Paradise
+< Air quality near Paradise is Hazardous.
+< AQI 428, from 3 PurpleAir sensors within 5 kilometres, updated 1 minute ago.
+< Everyone should avoid all physical activity outdoors, and sensitive groups should stay indoors and keep activity light.
+
+# A sensor near home matches strongly, so it wins over a far place of that name (Rattlesnake Creek, Oregon).
+> air quality at Rattlesnake Creek
+< Air quality at the sensor called Rattlesnake Creek is Good.
+< AQI 30, from a 10-minute average from 1 PurpleAir sensor, updated 8 minutes ago.
+@assert air-calls-this-turn purpleair 1
+
+# A sensor of that name that reports no humidity has no reading the correction can use.
+> air quality at Snowbowl Road Broken
+< The sensor called Snowbowl Road Broken has no reading I can use right now.
+
+# A far place with no rival of the same name: said by its own name, so the listener hears where it is.
+> air quality in Portland
+< No outdoor sensors are reporting within 15 kilometres of Portland, Oregon.
+
+# Two places called Springfield, both far from home: a choice, answered by number, even with no evidence at all.
+> how's the air in Springfield
+< Did you mean Springfield, Missouri, or Springfield, Illinois?
+< Say 'one' or 'two'.
+@assert listen true
+@assert reprompt Say 'one' or 'two', or 'air quality in' and the place with its state.
+
+> one
+< Air quality near Springfield, Missouri is Good.
+< AQI 32, from 3 PurpleAir sensors within 5 kilometres, updated 4 minutes ago.
+
+# The choice is done with: "two" now has no list.
+> two
+< [earcon: failure]
+< I can't read issues until I'm sure who's speaking.
+
+# Or with the state said, no question at all.
+> air quality in Springfield Missouri
+< Air quality near Springfield, Missouri is Good.
+< ...
+
+# The same question from a recognised voice can be repeated.
+@evidence person
+> air quality at Rattlesnake Creek
+< Air quality at the sensor called Rattlesnake Creek is Good.
+< ...
+> repeat
+< Air quality at the sensor called Rattlesnake Creek is Good.
+< AQI 30, from a 10-minute average from 1 PurpleAir sensor, updated 8 minutes ago.
+@evidence none
+
+# Another member of the household (the rate limit counts per speaker; see air-quality-limits.txt).
+@user test:person:kim
+
+# A place too wide to average over (a state), and no sensor of that name: not found.
+> air quality in Montana
+< I couldn't find a place or a sensor called Montana.
+< Try the nearest town, or a postal code.
+
+> air quality in Blorp
+< I couldn't find a place or a sensor called Blorp.
+< Try the nearest town, or a postal code.
+
+@air-fail purpleair unavailable
+> air quality in Bozeman
+< [earcon: failure]
+< I couldn't reach the air sensors. Try again in a moment.
+
+@air-fail purpleair key-refused
+> air quality in Bozeman
+< [earcon: failure]
+< I couldn't reach the air sensors. Try again in a moment.
+
+@air-fail geocoder
+> air quality in Polson Bay
+< [earcon: failure]
+< I couldn't reach the air sensors. Try again in a moment.
+@assert air-calls-this-turn purpleair 0
+
+# A street address or numbers that could be coordinates are never read back, in digits or in words.
+> air quality in 123 main street
+< I couldn't find a place or a sensor called that address.
+< Try the nearest town, or a postal code.
+
+> air quality near 46.87 -113.99
+< I couldn't find a place or a sensor called that place.
+< Try the nearest town, or a postal code.
+
+> air quality near forty six point eight seven minus one one three
+< I couldn't find a place or a sensor called that place.
+< Try the nearest town, or a postal code.
+
+# A postal code the listener said is read back a digit at a time.
+> air quality in 59802
+< Air quality near 5 9 8 0 2 is Moderate.
+< ...
+
+@assert unspoken Downtown
+@assert unspoken Barbecue
+@assert unspoken Seeley Lake Ranger
+@assert unspoken 46.8
+@assert unspoken main street
+@assert unspoken forty six

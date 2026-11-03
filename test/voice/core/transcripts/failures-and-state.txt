@@ -1,0 +1,50 @@
+# Tracker failures are spoken plainly with a way forward, and leave the conversation where it was.
+@fail listIssues unavailable
+> my issues
+< [earcon: failure]
+< I couldn't reach the tracker. Try again in a moment.
+@assert log warn voice.tracker.failed
+> my issues
+< You have 8 issues.
+< One: Fix the login redirect loop.
+< Two: Add dark mode to settings.
+< Three: Write the onboarding guide.
+< Four: Speed up search results.
+< Five: Remove the old export button.
+< 3 more. Say 'more' to hear them.
+@fail getIssue permission
+> open one
+< [earcon: failure]
+< The tracker wouldn't let me read that.
+> open one
+< [earcon: success]
+< Number 1.
+< Fix the login redirect loop.
+< In Progress.
+< Say 'description', 'comments', or 'fields'.
+@fail listComments unknown
+> comments
+< [earcon: failure]
+< I couldn't reach the tracker. Try again in a moment.
+# A slow tracker still answers; the timing is logged, not spoken.
+@latency 2500
+> fields
+< State: In Progress.
+< Assigned to someone without a name in the tracker.
+< Subsystem: Accounts.
+< Updated on 12 September.
+@latency 0
+# Low recogniser confidence is not acted on.
+@confidence 0.1
+> open two
+< I didn't catch that. You can say 'my issues', or 'help'.
+# A stored state from a newer version is discarded rather than trusted.
+@corrupt-state {"version": 99, "focus": "nonsense"}
+> more
+< There's nothing to go on with. Say 'my issues' to start.
+@assert log warn voice.state.loaded
+> repeat
+< There's nothing to go on with. Say 'my issues' to start.
+@corrupt-state not json at all
+> where am i
+< You're at the start. Say 'my issues' to hear your list.

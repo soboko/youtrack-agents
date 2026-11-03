@@ -1,0 +1,4 @@
+{
+  "extends": "../../tsconfig.json",
+  "include": ["./**/*.ts", "../tracker.ts", "../../test/voice/core/**/*.ts", "../../test/voice/text/**/*.ts"]
+}

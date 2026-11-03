@@ -1,0 +1,90 @@
+# Design rule 1: the working set expires after workingSetTtlMs, and every path that uses a position or describes the
+# list refuses it with the way back. An expired list never reveals its size.
+@ttl 1h
+> my issues
+< You have 8 issues.
+< One: Fix the login redirect loop.
+< Two: Add dark mode to settings.
+< Three: Write the onboarding guide.
+< Four: Speed up search results.
+< Five: Remove the old export button.
+< 3 more. Say 'more' to hear them.
+# Exactly at the lifetime the list still answers; one millisecond later it has expired.
+@advance 1h
+> where am i
+< You're in your issues, 8 issues.
+< You last heard 1 to 5.
+@advance 1ms
+> more
+< [earcon: failure]
+< That list has expired. Say 'my issues' to hear it again.
+@assert log info voice.workingSet.expired
+> previous
+< [earcon: failure]
+< That list has expired. Say 'my issues' to hear it again.
+> open one
+< [earcon: failure]
+< That list has expired. Say 'my issues' to hear it again.
+@assert calls-this-turn getIssue 0
+# Out of range on an expired list: still "expired", never "there's no number 9, the list has 8".
+> open nine
+< [earcon: failure]
+< That list has expired. Say 'my issues' to hear it again.
+> open the last one
+< [earcon: failure]
+< That list has expired. Say 'my issues' to hear it again.
+> where am i
+< Your last list has expired. Say 'my issues' to hear it again.
+# An expired list is not offered on launch.
+@end silence
+< (silence)
+@launch
+< Tracker ready. Say 'my issues', or 'help'.
+# Asking again works at once, and opening sits right on the boundary too.
+> my issues
+< You have 8 issues.
+< One: Fix the login redirect loop.
+< Two: Add dark mode to settings.
+< Three: Write the onboarding guide.
+< Four: Speed up search results.
+< Five: Remove the old export button.
+< 3 more. Say 'more' to hear them.
+@advance 1h
+> open one
+< [earcon: success]
+< Number 1.
+< Fix the login redirect loop.
+< In Progress.
+< Say 'description', 'comments', or 'fields'.
+@advance 1ms
+> open two
+< [earcon: failure]
+< That list has expired. Say 'my issues' to hear it again.
+# The issue opened before the list expired stays open: it was named, not guessed. Its number does not survive in
+# "where am I", which says the list has expired.
+> where am i
+< Your last list has expired. Say 'my issues' to hear it again.
+< Issue number 1: Fix the login redirect loop.
+< Nothing read from it yet.
+> more
+< Description, 3 paragraphs.
+< Paragraph 1 of 3.
+< After signing in, the page sends you back to the sign-in form. It happens on Safari only.
+< Say 'more' to go on.
+# A search with no results does not claim you are still in an expired list.
+@advance 13h
+> find kangaroo
+< No issues match.
+# A list captured "in the future" (a clock that moved back) is not trusted either.
+> my issues
+< You have 8 issues.
+< One: Fix the login redirect loop.
+< Two: Add dark mode to settings.
+< Three: Write the onboarding guide.
+< Four: Speed up search results.
+< Five: Remove the old export button.
+< 3 more. Say 'more' to hear them.
+@at 2026-09-12T08:00:00Z
+> open one
+< [earcon: failure]
+< That list has expired. Say 'my issues' to hear it again.

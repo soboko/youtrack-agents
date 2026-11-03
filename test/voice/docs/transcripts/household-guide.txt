@@ -1,0 +1,165 @@
+# The conversation behind docs/voice/commands.md (YA-32): every reply the guide quotes that no core transcript already
+# holds, spoken over the household sample issues. commands.test.ts runs this file and checks each quoted reply
+# against it. Change the guide's wording and this file together.
+@fixture sample
+@launch
+< Tracker ready. Say 'my issues', or 'help'.
+> my issues
+< You have 9 issues.
+< One: Book the piano tuner before the recital.
+< Two: Draft the October community newsletter.
+< Three: Compare quotes for the new boiler.
+< Four: Renew the home insurance.
+< Five: Set up the talking kitchen scales.
+< 4 more. Say 'more' to hear them.
+> where am i
+< You're in your issues, 9 issues.
+< You last heard 1 to 5.
+> more
+< [earcon: endOfList]
+< Issues 6 to 9 of 9.
+< Six: Choose plants for the raised bed.
+< Seven: Return the library audiobook players.
+< Eight: Update the emergency contact list.
+< Nine: Write thank you cards after the recital.
+< End of the list.
+> open number twenty
+< [earcon: failure]
+< There's no number 20. The list has 9.
+> open two
+< [earcon: success]
+< Number 2.
+< Draft the October community newsletter.
+< In Progress.
+< Say 'description', 'comments', or 'fields'.
+> read the description
+< Description, 3 paragraphs.
+< Paragraph 1 of 3.
+< Sections. A list of 4 items. Welcome from the chair. Allotment open day. Lost and found. Dates for the diary.
+< Say 'more' to go on.
+> more
+< Paragraph 2 of 3.
+< Keep it under 600 words; the printed copy is two sides of A5.
+> where am i
+< You're in your issues, 9 issues.
+< Issue number 2: Draft the October community newsletter.
+< Reading the description, paragraph 2 of 3.
+> comments
+< 3 comments.
+< Comment 1 of 3, from Priya, on 9 September.
+< Can we add a note about the new bin collection day? It moves to Thursday from the 1st.
+< Say 'more' to go on.
+> fields
+< State: In Progress.
+< Assigned to Robin Hale.
+< Subsystem: Community.
+< Updated on 11 September.
+> the title
+< Summary: Draft the October community newsletter.
+> say that again
+< Summary: Draft the October community newsletter.
+> find boiler
+< [earcon: success]
+< 1 issue matches.
+< Number 1.
+< Compare quotes for the new boiler.
+< Open.
+< Say 'description', 'comments', or 'fields'.
+> find the recital
+< 2 issues match.
+< One: Book the piano tuner before the recital.
+< Two: Write thank you cards after the recital.
+> find kangaroo
+< No issues match.
+< You're still in the matches for the recital.
+> in progress issues
+< You have 2 issues in progress.
+< One: Book the piano tuner before the recital.
+< Two: Draft the October community newsletter.
+> open issues
+< There are 11 open issues.
+< One: Book the piano tuner before the recital.
+< Two: Draft the October community newsletter.
+< Three: Compare quotes for the new boiler.
+< Four: Renew the home insurance.
+< Five: Set up the talking kitchen scales.
+< 6 more. Say 'more' to hear them.
+> recent issues
+< Here are the 10 most recently updated issues.
+< One: Book the piano tuner before the recital.
+< Two: Draft the October community newsletter.
+< Three: Compare quotes for the new boiler.
+< Four: Renew the home insurance.
+< Five: Set up the talking kitchen scales.
+< 5 more. Say 'more' to hear them.
+> open the last one
+< [earcon: success]
+< Number 10.
+< Update the emergency contact list.
+< Open.
+< Say 'description', 'comments', or 'fields'.
+> open issue hotel oscar mike echo twelve
+< [earcon: success]
+< Issue H O M E 12.
+< Book the piano tuner before the recital.
+< In Progress.
+< Say 'description', 'comments', or 'fields'.
+> open issue hotel oscar mike um echo two four
+< [earcon: success]
+< Issue H O M E 24.
+< Fix the wobbly garden gate latch.
+< In Progress.
+< Say 'description', 'comments', or 'fields'.
+# An id nothing has: the reply spells back the letters heard, which in project H is the one letter.
+> open issue hotel ninety nine
+< [earcon: failure]
+< I heard H 99, but there's no issue with that id.
+> full answers
+< [earcon: success]
+< Full answers.
+> my issues
+< You have 9 issues.
+< One: Book the piano tuner before the recital. In Progress.
+< Two: Draft the October community newsletter. In Progress.
+< ...
+> brief
+< [earcon: success]
+< Brief answers.
+> cancel
+< OK.
+@assert listen false
+@end user
+< (silence)
+# Coming back within 12 hours offers the list again; later than that, it has expired.
+@launch
+< Welcome back.
+< Say 'more' to go on with your list, or 'my issues' to start again.
+> stop
+< Goodbye.
+@assert listen false
+@advance 13h
+@launch
+< Tracker ready. Say 'my issues', or 'help'.
+> open two
+< [earcon: failure]
+< That list has expired. Say 'my issues' to hear it again.
+> where am i
+< Your last list has expired. Say 'my issues' to hear it again.
+# Someone else's issues (YA-35): by full name, first name or possessive; "where am I" names the list; a name nobody has
+# keeps the list; "me" is still your own.
+> what's assigned to Priya
+< Priya Shah has 1 issue.
+< One: Plan the allotment open day.
+> where am i
+< You're in Priya Shah's issues, 1 issue.
+< You last heard number 1.
+> show me Sam's issues
+< Sam Okafor has 1 issue.
+< One: Fix the wobbly garden gate latch.
+> issues for chris
+< [earcon: failure]
+< Nobody called Chris has open issues in this project.
+< You're still in Sam Okafor's issues.
+> issues for me
+< You have 9 issues.
+< ...

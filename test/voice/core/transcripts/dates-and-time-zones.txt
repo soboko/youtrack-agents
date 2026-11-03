@@ -1,0 +1,62 @@
+# Dates are relative ("today", "yesterday") only in the listener's own zone. Without a zone they are absolute. At
+# 03:00 UTC on Saturday it is still Friday evening in Los Angeles, so the two answers differ.
+@fixture dates
+@at 2026-09-12T03:00:00Z
+> my issues
+< You have 1 issue.
+< One: Check the date wording.
+> open one
+< [earcon: success]
+< Number 1.
+< Check the date wording.
+< Open.
+< Say 'description', 'comments', or 'fields'.
+@timezone none
+> full answers
+< [earcon: success]
+< Full answers.
+> comments
+< [earcon: endOfList]
+< 3 comments.
+< Comment 1 of 3, from Ana, on 11 September.
+< Friday lunchtime in Los Angeles, Friday evening in UTC.
+< Comment 2 of 3, from Chris, on 12 September.
+< Friday evening in Los Angeles, already Saturday in UTC.
+< Comment 3 of 3, from Priya, on 31 December 2025.
+< Last year.
+< End of the comments.
+> fields
+< State: Open.
+< Assigned to someone without a name in the tracker.
+< Updated on 12 September.
+@timezone America/Los_Angeles
+> comments
+< [earcon: endOfList]
+< 3 comments.
+< Comment 1 of 3, from Ana, today.
+< Friday lunchtime in Los Angeles, Friday evening in UTC.
+< Comment 2 of 3, from Chris, today.
+< Friday evening in Los Angeles, already Saturday in UTC.
+< Comment 3 of 3, from Priya, on 31 December 2025.
+< Last year.
+< End of the comments.
+> fields
+< State: Open.
+< Assigned to someone without a name in the tracker.
+< Updated today.
+@timezone UTC
+> comments
+< [earcon: endOfList]
+< 3 comments.
+< Comment 1 of 3, from Ana, yesterday.
+< Friday lunchtime in Los Angeles, Friday evening in UTC.
+< Comment 2 of 3, from Chris, today.
+< Friday evening in Los Angeles, already Saturday in UTC.
+< Comment 3 of 3, from Priya, on 31 December 2025.
+< Last year.
+< End of the comments.
+@timezone Pacific/Kiritimati
+> fields
+< State: Open.
+< Assigned to someone without a name in the tracker.
+< Updated today.

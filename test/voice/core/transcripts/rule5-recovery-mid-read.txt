@@ -1,0 +1,52 @@
+# Design rule 5: a failure mid-read keeps the place exactly, and an issue that disappears mid-read is closed.
+> my issues
+< You have 8 issues.
+< One: Fix the login redirect loop.
+< Two: Add dark mode to settings.
+< Three: Write the onboarding guide.
+< Four: Speed up search results.
+< Five: Remove the old export button.
+< 3 more. Say 'more' to hear them.
+> open one
+< [earcon: success]
+< Number 1.
+< Fix the login redirect loop.
+< In Progress.
+< Say 'description', 'comments', or 'fields'.
+> description
+< Description, 3 paragraphs.
+< Paragraph 1 of 3.
+< After signing in, the page sends you back to the sign-in form. It happens on Safari only.
+< Say 'more' to go on.
+> more
+< Paragraph 2 of 3.
+< The redirect is set in auth/callback.ts. See the session notes and an issue for background.
+@fail getIssue unavailable
+> more
+< [earcon: failure]
+< I couldn't reach the tracker. Try again in a moment.
+> more
+< [earcon: endOfList]
+< Paragraph 3 of 3.
+< Next step: reproduce it with a fresh profile.
+< End of the description.
+> where am i
+< You're in your issues, 8 issues.
+< Issue number 1: Fix the login redirect loop.
+< Reading the description, paragraph 3 of 3.
+> more
+< [earcon: endOfList]
+< End of the description.
+@assert calls-this-turn getIssue 1
+# The issue is deleted while it is being read.
+> previous
+< Paragraph 2 of 3.
+< The redirect is set in auth/callback.ts. See the session notes and an issue for background.
+@remove YA-21
+> more
+< [earcon: failure]
+< That issue isn't there any more. Say 'my issues' to hear your list.
+> where am i
+< You're in your issues, 8 issues.
+> more
+< There's nothing to go on with. Say 'my issues' to start.

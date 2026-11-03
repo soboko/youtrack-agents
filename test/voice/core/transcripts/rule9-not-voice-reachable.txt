@@ -1,0 +1,27 @@
+# Design rule 9, second half: destructive, bulk and other people's work actions are not voice-reachable at all.
+> my issues
+< You have 8 issues.
+< One: Fix the login redirect loop.
+< Two: Add dark mode to settings.
+< Three: Write the onboarding guide.
+< Four: Speed up search results.
+< Five: Remove the old export button.
+< 3 more. Say 'more' to hear them.
+> open one
+< [earcon: success]
+< Number 1.
+< Fix the login redirect loop.
+< In Progress.
+< Say 'description', 'comments', or 'fields'.
+> delete issue one
+< I didn't catch that. You can say 'my issues', or 'help'.
+> delete it
+< I didn't catch that. You can say 'my issues', or 'help'.
+> close all my issues
+< I didn't catch that. You can say 'my issues', or 'help'.
+> assign it to ana
+< I didn't catch that. You can say 'my issues', or 'help'.
+> remove all comments
+< I didn't catch that. You can say 'my issues', or 'help'.
+> move everything to done
+< I didn't catch that. You can say 'my issues', or 'help'.

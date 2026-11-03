@@ -1,0 +1,105 @@
+# Design rule 3, continued. Changing verbosity mid-list keeps the position: "more" goes on from the next item, not from
+# the top at the new page size. An item longer than the whole speech limit is split across pages, never dropped.
+@generate 20
+> my issues
+< You have 28 issues.
+< One: Fix the login redirect loop.
+< Two: Add dark mode to settings.
+< Three: Write the onboarding guide.
+< Four: Speed up search results.
+< Five: Remove the old export button.
+< 23 more. Say 'more' to hear them.
+> more
+< Issues 6 to 10 of 28.
+< Six: Calendar sync drops events.
+< Seven: Update the privacy policy.
+< Eight: Login emails arrive late.
+< Nine: Generated task 1.
+< Ten: Generated task 2.
+< 18 more. Say 'more' to hear them.
+> full answers
+< [earcon: success]
+< Full answers.
+> more
+< [earcon: endOfList]
+< Issues 11 to 28 of 28.
+< Eleven: Generated task 3. Open.
+< Twelve: Generated task 4. Open.
+< Thirteen: Generated task 5. Open.
+< Fourteen: Generated task 6. Open.
+< Fifteen: Generated task 7. Open.
+< Sixteen: Generated task 8. Open.
+< Seventeen: Generated task 9. Open.
+< Eighteen: Generated task 10. Open.
+< Nineteen: Generated task 11. Open.
+< Twenty: Generated task 12. Open.
+< Twenty-one: Generated task 13. Open.
+< Twenty-two: Generated task 14. Open.
+< Twenty-three: Generated task 15. Open.
+< Twenty-four: Generated task 16. Open.
+< Twenty-five: Generated task 17. Open.
+< Twenty-six: Generated task 18. Open.
+< Twenty-seven: Generated task 19. Open.
+< Twenty-eight: Generated task 20. Open.
+< End of the list.
+> previous
+< You have 28 issues.
+< One: Fix the login redirect loop. In Progress.
+< Two: Add dark mode to settings. Submitted.
+< Three: Write the onboarding guide. Open.
+< Four: Speed up search results. In Progress.
+< Five: Remove the old export button. Open.
+< Six: Calendar sync drops events. Open.
+< Seven: Update the privacy policy. Open.
+< Eight: Login emails arrive late. Open.
+< Nine: Generated task 1. Open.
+< Ten: Generated task 2. Open.
+< 18 more. Say 'more' to hear them.
+> brief answers
+< [earcon: success]
+< Brief answers.
+> more
+< Issues 11 to 15 of 28.
+< Eleven: Generated task 3.
+< Twelve: Generated task 4.
+< Thirteen: Generated task 5.
+< Fourteen: Generated task 6.
+< Fifteen: Generated task 7.
+< 13 more. Say 'more' to hear them.
+# A summary longer than the whole response: number one is heard in pieces, and nothing is skipped.
+@maxchars 250
+@update YA-21 summary=This summary goes on and on because someone pasted the whole bug report into the title field, including the steps to reproduce, the expected result, the actual result, and a note about which browsers were tried before anyone noticed it was far too long to read
+> my issues
+< You have 28 issues.
+< One: This summary goes on and on because someone pasted the whole bug report into the title field, including the steps to
+< Number 1 goes on. Say 'more' to hear the rest.
+> more
+< Issue 1 of 28.
+< One, continued: reproduce, the expected result, the actual result, and a note about which browsers were tried before anyone noticed it was
+< One, continued: far too long to read.
+< 27 more. Say 'more' to hear them.
+> more
+< Issues 2 to 6 of 28.
+< Two: Add dark mode to settings.
+< Three: Write the onboarding guide.
+< Four: Speed up search results.
+< Five: Remove the old export button.
+< Six: Calendar sync drops events.
+< 22 more. Say 'more' to hear them.
+> where am i
+< You're in your issues, 28 issues.
+< You last heard 2 to 6.
+> open one
+< [earcon: success]
+< Number 1.
+< This summary goes on and on because someone pasted the whole bug report into the title field, including the steps to reproduce, the.
+< The title goes on. Say 'summary' to hear all of it.
+< In Progress.
+< Say 'description', 'comments', or 'fields'.
+> summary
+< Summary: This summary goes on and on because someone pasted the whole bug report into the title field, including the steps to
+< Say 'more' to go on.
+> more
+< Summary, continued: reproduce, the expected result, the actual result, and a note about which browsers were tried before anyone noticed it
+> more
+< Summary, continued: was far too long to read.

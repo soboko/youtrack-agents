@@ -1,0 +1,30 @@
+{
+  "me": "sam",
+  "issues": [
+    {
+      "key": "YA-50",
+      "summary": "Check the date wording",
+      "state": "Open",
+      "assignee": "sam",
+      "updated": "2026-09-12T01:30:00Z",
+      "description": "Dates.",
+      "comments": [
+        {
+          "author": "Ana",
+          "created": "2026-09-11T20:00:00Z",
+          "text": "Friday lunchtime in Los Angeles, Friday evening in UTC."
+        },
+        {
+          "author": "Chris",
+          "created": "2026-09-12T01:30:00Z",
+          "text": "Friday evening in Los Angeles, already Saturday in UTC."
+        },
+        {
+          "author": "Priya",
+          "created": "2025-12-31T12:00:00Z",
+          "text": "Last year."
+        }
+      ]
+    }
+  ]
+}

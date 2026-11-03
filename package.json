@@ -1,0 +1,32 @@
+{
+  "name": "youtrack-agents",
+  "version": "1.0.0",
+  "description": "YouTrack for coding agents: a dependency-free TypeScript CLI and client, plus the agent instructions that make an issue tracker work with AI sessions",
+  "type": "module",
+  "private": false,
+  "license": "MIT",
+  "bin": {
+    "yt": "./yt.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc -p .",
+    "format": "prettier --write \"*.ts\" \"src/**/*.ts\" \"test/**/*.ts\"",
+    "format:check": "prettier --check \"*.ts\" \"src/**/*.ts\" \"test/**/*.ts\"",
+    "test": "node --test --test-timeout=30000 \"test/**/*.test.ts\""
+  },
+  "engines": {
+    "node": ">=22.18"
+  },
+  "devDependencies": {
+    "@types/node": "^22",
+    "prettier": "3.9.6",
+    "typescript": "^5.6"
+  },
+  "keywords": [
+    "youtrack",
+    "agents",
+    "claude-code",
+    "codex",
+    "issue-tracking"
+  ]
+}

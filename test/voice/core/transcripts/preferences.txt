@@ -1,0 +1,92 @@
+# Verbosity and speech rate are per-person preferences that persist across sessions. The rate steps by 25 percent
+# between 50 and 250, and says so at either end rather than silently doing nothing.
+> faster
+< [earcon: success]
+< Speed 125 percent.
+@assert rate 125
+> faster
+< [earcon: success]
+< Speed 150 percent.
+> faster
+< [earcon: success]
+< Speed 175 percent.
+> faster
+< [earcon: success]
+< Speed 200 percent.
+> faster
+< [earcon: success]
+< Speed 225 percent.
+> faster
+< [earcon: success]
+< Speed 250 percent.
+@assert rate 250
+> faster
+< [earcon: failure]
+< That's as fast as I go: 250 percent.
+@assert rate 250
+> normal speed
+< [earcon: success]
+< Speed 100 percent.
+@assert rate 100
+> slow down
+< [earcon: success]
+< Speed 75 percent.
+> slower
+< [earcon: success]
+< Speed 50 percent.
+> slower
+< [earcon: failure]
+< That's as slow as I go: 50 percent.
+@assert rate 50
+> set speed to 150 percent
+< [earcon: success]
+< Speed 150 percent.
+@assert rate 150
+# A percentage outside what a person plausibly said is not acted on.
+> set speed to 1000 percent
+< I didn't catch that. You can say 'my issues', or 'help'.
+@assert rate 150
+> be terse
+< [earcon: success]
+< Brief answers.
+> verbose mode
+< [earcon: success]
+< Full answers.
+> my issues
+< You have 8 issues.
+< One: Fix the login redirect loop. In Progress.
+< Two: Add dark mode to settings. Submitted.
+< Three: Write the onboarding guide. Open.
+< Four: Speed up search results. In Progress.
+< Five: Remove the old export button. Open.
+< Six: Calendar sync drops events. Open.
+< Seven: Update the privacy policy. Open.
+< Eight: Login emails arrive late. Open.
+@end user
+< (silence)
+# Preferences survive the session.
+@launch
+< Welcome back.
+< Say 'more' to go on with your list, or 'my issues' to start again.
+@assert rate 150
+> my issues
+< You have 8 issues.
+< One: Fix the login redirect loop. In Progress.
+< Two: Add dark mode to settings. Submitted.
+< Three: Write the onboarding guide. Open.
+< Four: Speed up search results. In Progress.
+< Five: Remove the old export button. Open.
+< Six: Calendar sync drops events. Open.
+< Seven: Update the privacy policy. Open.
+< Eight: Login emails arrive late. Open.
+> brief mode
+< [earcon: success]
+< Brief answers.
+> my issues
+< You have 8 issues.
+< One: Fix the login redirect loop.
+< Two: Add dark mode to settings.
+< Three: Write the onboarding guide.
+< Four: Speed up search results.
+< Five: Remove the old export button.
+< 3 more. Say 'more' to hear them.

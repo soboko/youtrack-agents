@@ -1,0 +1,41 @@
+# YA-35 with design rule 7: when the tracker caps the people or a person's issues, nothing is spoken as "all", and
+# "nobody called" is never said when not everyone could be checked (review F3).
+@fixture people
+@cap-people 3
+@cap 2
+> issues for chris
+< At least 2 people match Chris.
+< One: Chris Coulter.
+< Two: Chris Holloway.
+< There may be others with that name. Say the number of the one you mean.
+> more
+< There may be others with that name. Say the number of the one you mean.
+> where am i
+< You're in the people who match Chris, at least 2 people.
+< You last heard 1 to 2.
+> open three
+< [earcon: failure]
+< There's no number 3. I only have the first 2 people.
+> one
+< Chris Coulter has at least 2 issues.
+< One: Fix the garden gate latch.
+< Two: Book the boiler service.
+< That's the first 2. Say 'find' and some words to narrow it down.
+# A whole name, first name or login is taken even from a capped list; anything less is asked about by name.
+> issues for chris coulter
+< Chris Coulter has at least 2 issues.
+< ...
+> issues for zoe
+< [earcon: failure]
+< I couldn't find anyone called Zoe, but I can't name everyone in this project.
+< You're still in Chris Coulter's issues.
+@fail listAssignees unavailable
+> issues for zoe
+< [earcon: failure]
+< I couldn't reach the tracker. Try again in a moment.
+@fail listAssignees permission
+> issues for zoe
+< [earcon: failure]
+< The tracker wouldn't let me read that.
+@assert unspoken ccoulter
+@assert unspoken cholloway

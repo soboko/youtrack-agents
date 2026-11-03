@@ -1,0 +1,92 @@
+# Design rule 3: brief by default, at most five items a page and always under the platform's speech limit.
+# "More" continues and "previous" goes back.
+@generate 7
+> my issues
+< You have 15 issues.
+< One: Fix the login redirect loop.
+< Two: Add dark mode to settings.
+< Three: Write the onboarding guide.
+< Four: Speed up search results.
+< Five: Remove the old export button.
+< 10 more. Say 'more' to hear them.
+> more
+< Issues 6 to 10 of 15.
+< Six: Calendar sync drops events.
+< Seven: Update the privacy policy.
+< Eight: Login emails arrive late.
+< Nine: Generated task 1.
+< Ten: Generated task 2.
+< 5 more. Say 'more' to hear them.
+> more
+< [earcon: endOfList]
+< Issues 11 to 15 of 15.
+< Eleven: Generated task 3.
+< Twelve: Generated task 4.
+< Thirteen: Generated task 5.
+< Fourteen: Generated task 6.
+< Fifteen: Generated task 7.
+< End of the list.
+> more
+< [earcon: endOfList]
+< End of the list.
+> previous
+< Issues 6 to 10 of 15.
+< Six: Calendar sync drops events.
+< Seven: Update the privacy policy.
+< Eight: Login emails arrive late.
+< Nine: Generated task 1.
+< Ten: Generated task 2.
+< 5 more. Say 'more' to hear them.
+> previous
+< You have 15 issues.
+< One: Fix the login redirect loop.
+< Two: Add dark mode to settings.
+< Three: Write the onboarding guide.
+< Four: Speed up search results.
+< Five: Remove the old export button.
+< 10 more. Say 'more' to hear them.
+> previous
+< That's the start of the list.
+> previous
+< That's the start of the list.
+# A small speech budget pages sooner than five.
+@maxchars 200
+> my issues
+< You have 15 issues.
+< One: Fix the login redirect loop.
+< Two: Add dark mode to settings.
+< Three: Write the onboarding guide.
+< Four: Speed up search results.
+< 11 more. Say 'more' to hear them.
+> more
+< Issues 5 to 8 of 15.
+< Five: Remove the old export button.
+< Six: Calendar sync drops events.
+< Seven: Update the privacy policy.
+< Eight: Login emails arrive late.
+< 7 more. Say 'more' to hear them.
+# Full verbosity takes more per page, still within the budget.
+@maxchars 1000
+> full answers
+< [earcon: success]
+< Full answers.
+> my issues
+< You have 15 issues.
+< One: Fix the login redirect loop. In Progress.
+< Two: Add dark mode to settings. Submitted.
+< Three: Write the onboarding guide. Open.
+< Four: Speed up search results. In Progress.
+< Five: Remove the old export button. Open.
+< Six: Calendar sync drops events. Open.
+< Seven: Update the privacy policy. Open.
+< Eight: Login emails arrive late. Open.
+< Nine: Generated task 1. Open.
+< Ten: Generated task 2. Open.
+< Eleven: Generated task 3. Open.
+< Twelve: Generated task 4. Open.
+< Thirteen: Generated task 5. Open.
+< Fourteen: Generated task 6. Open.
+< Fifteen: Generated task 7. Open.
+> more
+< [earcon: endOfList]
+< End of the list.

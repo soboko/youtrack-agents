@@ -1,0 +1,88 @@
+# YA-36: "air quality here" for here. The device's location first, said "near you" (never its postal code), then the home
+# setting, said "at home". Air quality reads no tracker content, so any speaker may ask, even with no evidence at all.
+@evidence none
+@home 46.87,-113.99
+@device 59802 US
+
+> air quality here
+< Air quality near you is Moderate.
+< AQI 65, from a 10-minute average from 1 PurpleAir sensor, 3560 metres away, updated 6 minutes ago.
+< Unusually sensitive people should consider making outdoor activities shorter and less intense.
+@assert listen true
+@assert reprompt Say 'air quality in' and a town, or 'stop'.
+@assert air-calls-this-turn purpleair 2
+@assert calls listIssues 0
+
+# The same area again within five minutes: the cached figure, aged as it is served, and no PurpleAir call or geocode.
+@advance 2m
+> what's the air quality here
+< Air quality near you is Moderate.
+< AQI 65, from a 10-minute average from 1 PurpleAir sensor, 3560 metres away, updated 8 minutes ago.
+< ...
+@assert air-calls-this-turn purpleair 0
+@assert air-calls-this-turn geocoder 0
+
+# Five minutes after the first answer the cache has expired and PurpleAir is asked again; the postal code's geocode is
+# still cached.
+@advance 3m
+> air quality here
+< Air quality near you is Moderate.
+< AQI 65, from a 10-minute average from 1 PurpleAir sensor, 3560 metres away, updated 11 minutes ago.
+< ...
+@assert air-calls-this-turn purpleair 2
+@assert air-calls-this-turn geocoder 0
+
+# The device's postal code does not geocode: home, and it says "at home". Ten minutes after the first answer only the
+# three sensors that reported most recently are still fresh.
+@advance 5m
+@device 00000 US
+> how's the air here
+< Air quality at home is Moderate.
+< AQI 63, from a 10-minute average from 1 PurpleAir sensor, 902 metres away, updated 14 minutes ago.
+< Unusually sensitive people should consider making outdoor activities shorter and less intense.
+
+# The geocoder fails for a postal code it has not seen: home.
+@device 59801 US
+@air-fail geocoder
+> is the air okay here
+< Air quality at home is Moderate.
+< ...
+
+# No device location (the address permission is not granted, or the lookup failed): home, with no geocoding at all.
+@device none
+> air quality here
+< Air quality at home is Moderate.
+< ...
+@assert air-calls-this-turn geocoder 0
+
+# The home setting as a place name, geocoded. "At home" is here, not a place called Home.
+@home missoula
+> air quality at home
+< Air quality at home is Moderate.
+< AQI 63, from a 10-minute average from 1 PurpleAir sensor, 1023 metres away, updated 14 minutes ago.
+< ...
+@assert air-calls-this-turn geocoder 1
+
+# Ten minutes later no sensor near home has reported for a quarter of an hour: said honestly, with no figure.
+@advance 10m
+> air quality here
+< The newest reading at home is 22 minutes old.
+< That's too old to give a current reading.
+
+# No device location and no home setting: said plainly, with a way forward.
+@home none
+> air quality here
+< I don't know where this device is.
+< Say 'air quality in' and a town, or allow this skill to use the device's postal code.
+@assert air-calls-this-turn purpleair 0
+
+# With no air-quality service configured.
+@air off
+> air quality here
+< [earcon: failure]
+< Air quality isn't set up for this skill.
+@assert unspoken 46.87
+@assert unspoken 113
+@assert unspoken 5 9 8 0
+@assert unspoken 59802
+@assert unspoken Downtown

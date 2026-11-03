@@ -1,0 +1,74 @@
+# Design rule 2 with ordinary speech: a hesitation before a number ("open, um, two") is tried as an id first, because
+# some project keys sound like hesitations. If no such issue exists, the filler was a pause, and the number is a
+# position in the current list; the reply says "Number 2" and the summary, so a wrong guess is heard at once.
+@fixture keys
+# 3. No such issue and no list: say so, and offer the way to a list.
+> open um two
+< [earcon: failure]
+< I heard U M 2, but there's no issue with that id. Say 'my issues' to hear a list.
+@assert calls-this-turn getIssue 1
+> my issues
+< You have 15 issues.
+< One: Home chore number 1.
+< Two: Home chore number 2.
+< Three: Home chore number 3.
+< Four: Home chore number 4.
+< Five: Home chore number 5.
+< 10 more. Say 'more' to hear them.
+# 2. No issue UM-2, so "um" was a pause: position 2.
+> open um two
+< [earcon: success]
+< Number 2.
+< Home chore number 2.
+< Open.
+< Say 'description', 'comments', or 'fields'.
+@assert calls-this-turn getIssue 2
+> open, uh, the second one
+< [earcon: success]
+< Number 2.
+< Home chore number 2.
+< Open.
+< Say 'description', 'comments', or 'fields'.
+@assert calls-this-turn getIssue 1
+# 1. MM-12 exists, so it opens; once it is gone, the same words mean position 12.
+> open mm twelve
+< [earcon: success]
+< Issue M M 12.
+< Printer bug the user asked for.
+< Open.
+< Say 'description', 'comments', or 'fields'.
+@remove MM-12
+> open mm twelve
+< [earcon: success]
+< Number 12.
+< Home chore number 12.
+< Open.
+< Say 'description', 'comments', or 'fields'.
+# 4. A prefix that is not a filler stays an id: no guessing a position.
+> open YA 99
+< [earcon: failure]
+< I heard Y A 99, but there's no issue with that id.
+# An id said with a carrier word is an id request, never a position.
+> open issue um two
+< [earcon: failure]
+< I heard U M 2, but there's no issue with that id.
+# The position lookup only follows a not-found. A tracker that cannot be reached is said so, and nothing is opened.
+> my issues
+< You have 15 issues.
+< One: Home chore number 1.
+< Two: Home chore number 2.
+< Three: Home chore number 3.
+< Four: Home chore number 4.
+< Five: Home chore number 5.
+< 10 more. Say 'more' to hear them.
+@fail getIssue unavailable
+> open um two
+< [earcon: failure]
+< I couldn't reach the tracker. Try again in a moment.
+@assert calls-this-turn getIssue 1
+# On an expired list the fallback is refused as expired, like any other position: never a guess.
+@advance 13h
+> open um two
+< [earcon: failure]
+< That list has expired. Say 'my issues' to hear it again.
+@assert calls-this-turn getIssue 1

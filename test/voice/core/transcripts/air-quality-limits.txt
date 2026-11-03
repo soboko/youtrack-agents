@@ -1,0 +1,87 @@
+# YA-36 review S-P2: at most 20 air-quality lookups per speaker in 10 minutes, then a plain "try again later".
+@evidence none
+@home 46.87,-113.99
+
+> air quality here
+< Air quality at home is Moderate.
+< ...
+@assert air-calls-this-turn purpleair 2
+> air quality here
+< Air quality at home is Moderate.
+< ...
+> air quality here
+< Air quality at home is Moderate.
+< ...
+> air quality here
+< Air quality at home is Moderate.
+< ...
+> air quality here
+< Air quality at home is Moderate.
+< ...
+> air quality here
+< Air quality at home is Moderate.
+< ...
+> air quality here
+< Air quality at home is Moderate.
+< ...
+> air quality here
+< Air quality at home is Moderate.
+< ...
+> air quality here
+< Air quality at home is Moderate.
+< ...
+> air quality here
+< Air quality at home is Moderate.
+< ...
+> air quality here
+< Air quality at home is Moderate.
+< ...
+> air quality here
+< Air quality at home is Moderate.
+< ...
+> air quality here
+< Air quality at home is Moderate.
+< ...
+> air quality here
+< Air quality at home is Moderate.
+< ...
+> air quality here
+< Air quality at home is Moderate.
+< ...
+> air quality here
+< Air quality at home is Moderate.
+< ...
+> air quality here
+< Air quality at home is Moderate.
+< ...
+> air quality here
+< Air quality at home is Moderate.
+< ...
+> air quality here
+< Air quality at home is Moderate.
+< ...
+> air quality here
+< Air quality at home is Moderate.
+< ...
+@assert air-calls purpleair 2
+
+# The twenty-first: refused before any lookup, and the session closes.
+> air quality here
+< [earcon: failure]
+< I've checked the air a lot just now. Try again in a few minutes.
+@assert listen false
+@assert air-calls purpleair 2
+@assert log warn air.limit
+
+# Someone else in the household is not held back by it.
+@user test:person:kim
+> air quality here
+< Air quality at home is Moderate.
+< ...
+
+# Ten minutes on, the first speaker can ask again.
+@user test:person:sam
+@advance 10m
+> air quality here
+< Air quality at home is Moderate.
+< ...

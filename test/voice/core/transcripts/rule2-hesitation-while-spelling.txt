@@ -1,0 +1,51 @@
+# Design rule 2 with ordinary speech: hesitating while spelling an id is a pause, and politeness is never part of an
+# id. Only a hesitation directly before a number, with no letters spelled yet, can be a project key.
+@fixture keys
+> my issues
+< You have 15 issues.
+< One: Home chore number 1.
+< Two: Home chore number 2.
+< Three: Home chore number 3.
+< Four: Home chore number 4.
+< Five: Home chore number 5.
+< 10 more. Say 'more' to hear them.
+> open issue um yankee alpha one three
+< [earcon: failure]
+< I heard Y A 13, but there's no issue with that id.
+> open issue, er, hotel oscar mike echo 12
+< [earcon: success]
+< Issue H O M E 12.
+< Home chore number 12.
+< Open.
+< Say 'description', 'comments', or 'fields'.
+> issue hotel oscar mike um echo one two
+< [earcon: success]
+< Issue H O M E 12.
+< Home chore number 12.
+< Open.
+< Say 'description', 'comments', or 'fields'.
+> open please two
+< [earcon: success]
+< Number 2.
+< Home chore number 2.
+< Open.
+< Say 'description', 'comments', or 'fields'.
+@assert calls-this-turn getIssue 1
+> please 3
+< [earcon: success]
+< Number 3.
+< Home chore number 3.
+< Open.
+< Say 'description', 'comments', or 'fields'.
+> number um four
+< [earcon: success]
+< Number 4.
+< Home chore number 4.
+< Open.
+< Say 'description', 'comments', or 'fields'.
+> open can you five
+< [earcon: success]
+< Number 5.
+< Home chore number 5.
+< Open.
+< Say 'description', 'comments', or 'fields'.

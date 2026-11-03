@@ -1,0 +1,91 @@
+# Design rule 8 with stored state: the person reads, then a weaker speaker on the same account tries every read path.
+# Each refuses, reveals nothing (no summary, count or part name) and calls nothing. "Repeat" does not replay what was
+# stored, and launch does not offer to resume.
+@policy person
+@evidence person
+> my issues
+< You have 8 issues.
+< One: Fix the login redirect loop.
+< Two: Add dark mode to settings.
+< Three: Write the onboarding guide.
+< Four: Speed up search results.
+< Five: Remove the old export button.
+< 3 more. Say 'more' to hear them.
+> open one
+< [earcon: success]
+< Number 1.
+< Fix the login redirect loop.
+< In Progress.
+< Say 'description', 'comments', or 'fields'.
+> description
+< Description, 3 paragraphs.
+< Paragraph 1 of 3.
+< After signing in, the page sends you back to the sign-in form. It happens on Safari only.
+< Say 'more' to go on.
+> comments
+< 2 comments.
+< Comment 1 of 2, from Ana, on 11 September.
+< I can reproduce this on my phone too.
+< Say 'more' to go on.
+@evidence account
+> more
+< [earcon: failure]
+< I can't read issues until I'm sure who's speaking.
+@assert calls-this-turn getIssue 0
+@assert calls-this-turn listComments 0
+> previous
+< [earcon: failure]
+< I can't read issues until I'm sure who's speaking.
+> resume
+< [earcon: failure]
+< I can't read issues until I'm sure who's speaking.
+> read it
+< [earcon: failure]
+< I can't read issues until I'm sure who's speaking.
+> description
+< [earcon: failure]
+< I can't read issues until I'm sure who's speaking.
+> comments
+< [earcon: failure]
+< I can't read issues until I'm sure who's speaking.
+> fields
+< [earcon: failure]
+< I can't read issues until I'm sure who's speaking.
+> summary
+< [earcon: failure]
+< I can't read issues until I'm sure who's speaking.
+> repeat
+< [earcon: failure]
+< I can't read issues until I'm sure who's speaking.
+> where am i
+< [earcon: failure]
+< I can't read issues until I'm sure who's speaking.
+> my issues
+< [earcon: failure]
+< I can't read issues until I'm sure who's speaking.
+> open two
+< [earcon: failure]
+< I can't read issues until I'm sure who's speaking.
+> find login
+< [earcon: failure]
+< I can't read issues until I'm sure who's speaking.
+> open issue yankee alpha two two
+< [earcon: failure]
+< I can't read issues until I'm sure who's speaking.
+@end silence
+< (silence)
+@launch
+< [earcon: failure]
+< Tracker ready.
+< I can't read issues until I'm sure who's speaking.
+# Recognised again, the person carries on exactly where they were.
+@evidence person
+@launch
+< Welcome back.
+< You were reading the comments of Fix the login redirect loop.
+< Say 'more' to go on, or 'my issues'.
+> more
+< [earcon: endOfList]
+< Comment 2 of 2, from Chris, on 12 September.
+< Cookies were blocked. Try again with them allowed.
+< End of the comments.

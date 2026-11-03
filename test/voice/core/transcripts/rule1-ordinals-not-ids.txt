@@ -1,0 +1,96 @@
+# Design rule 1: ordinals, not ids. A query reads a numbered page, and later turns refer to positions.
+# Ordinals map to the keys captured when the list was read; the issue is re-fetched when opened.
+> my issues
+< You have 8 issues.
+< One: Fix the login redirect loop.
+< Two: Add dark mode to settings.
+< Three: Write the onboarding guide.
+< Four: Speed up search results.
+< Five: Remove the old export button.
+< 3 more. Say 'more' to hear them.
+> open two
+< [earcon: success]
+< Number 2.
+< Add dark mode to settings.
+< Submitted.
+< Say 'description', 'comments', or 'fields'.
+@assert calls-this-turn getIssue 1
+# The same position, said in other ways.
+> the second one
+< [earcon: success]
+< Number 2.
+< Add dark mode to settings.
+< Submitted.
+< Say 'description', 'comments', or 'fields'.
+> number 2
+< [earcon: success]
+< Number 2.
+< Add dark mode to settings.
+< Submitted.
+< Say 'description', 'comments', or 'fields'.
+> open the 2nd one please
+< [earcon: success]
+< Number 2.
+< Add dark mode to settings.
+< Submitted.
+< Say 'description', 'comments', or 'fields'.
+> um, can you open number two
+< [earcon: success]
+< Number 2.
+< Add dark mode to settings.
+< Submitted.
+< Say 'description', 'comments', or 'fields'.
+# Positions past the end are refused, not clamped.
+> open nine
+< [earcon: failure]
+< There's no number 9. The list has 8.
+@assert calls-this-turn getIssue 0
+> open the last one
+< [earcon: success]
+< Number 8.
+< Login emails arrive late.
+< Open.
+< Say 'description', 'comments', or 'fields'.
+# The tracker changed after the list was read: opening re-fetches, so the summary is today's, while "one" still
+# means the issue that was number one when the list was read.
+@update YA-21 summary=Fix the sign-in redirect loop
+> open one
+< [earcon: success]
+< Number 1.
+< Fix the sign-in redirect loop.
+< In Progress.
+< Say 'description', 'comments', or 'fields'.
+@assert calls-this-turn getIssue 1
+# The working set persists across sessions for the same person.
+@end silence
+< (silence)
+@launch
+< Welcome back.
+< You had Fix the sign-in redirect loop open.
+< Say 'more' to go on, or 'my issues'.
+> open three
+< [earcon: success]
+< Number 3.
+< Write the onboarding guide.
+< Open.
+< Say 'description', 'comments', or 'fields'.
+# An issue that disappeared since the list was read is not replaced by its neighbour.
+@remove YA-24
+> open four
+< [earcon: failure]
+< Number 4 isn't there any more. Say 'my issues' to hear the list again.
+# Asking again captures a fresh list, and positions mean what was just heard.
+> my issues
+< You have 7 issues.
+< One: Fix the sign-in redirect loop.
+< Two: Add dark mode to settings.
+< Three: Write the onboarding guide.
+< Four: Remove the old export button.
+< Five: Calendar sync drops events.
+< 2 more. Say 'more' to hear them.
+> open two
+< [earcon: success]
+< Number 2.
+< Add dark mode to settings.
+< Submitted.
+< Say 'description', 'comments', or 'fields'.

@@ -1,0 +1,36 @@
+# Search: a search with no matches keeps the list the person was on, and says so. Meaningful words are kept ("well"
+# is not a filler inside a search), accents fold, and a single partial match is a list of one, not an opened issue.
+@update YA-28 updated=2026-09-12T08:30:00Z
+> my issues
+< You have 8 issues.
+< One: Login emails arrive late.
+< Two: Fix the login redirect loop.
+< Three: Add dark mode to settings.
+< Four: Write the onboarding guide.
+< Five: Speed up search results.
+< 3 more. Say 'more' to hear them.
+> find xylophone
+< No issues match.
+< You're still in your issues.
+> where am i
+< You're in your issues, 8 issues.
+< You last heard 1 to 5.
+> open two
+< [earcon: success]
+< Number 2.
+< Fix the login redirect loop.
+< In Progress.
+< Say 'description', 'comments', or 'fields'.
+> find login redirect
+< 2 issues match.
+< One: Fix the login redirect loop.
+< Two: Login emails arrive late.
+> find dark matter
+< 1 issue matches.
+< One: Add dark mode to settings.
+> find the well pump
+< No issues match.
+< You're still in the matches for dark matter.
+> where am i
+< You're in the matches for dark matter, 1 issue.
+< You last heard number 1.

@@ -1,0 +1,68 @@
+{
+  "places": {
+    "hamilton": [{"lat": 46.2466, "lon": -114.1582, "name": "Hamilton, Montana"}],
+    "missoula": [46.8721, -113.994],
+    "59802": [46.905, -113.97],
+    "seeley lake": [47.1794, -113.4845],
+    "polson": [47.6936, -114.1632],
+    "jordan": [47.3208, -106.9101],
+    "paradise": [47.3893, -114.8007],
+    "montana": null,
+    "portland": [{"lat": 45.5152, "lon": -122.6784, "name": "Portland, Oregon"}],
+    "bozeman": [{"lat": 45.677, "lon": -111.0429, "name": "Bozeman, Montana"}],
+    "springfield": [
+      {"lat": 39.7817, "lon": -89.6501, "name": "Springfield, Illinois"},
+      {"lat": 37.2089, "lon": -93.2923, "name": "Springfield, Missouri"},
+      {"lat": 42.1015, "lon": -72.5898, "name": "Springfield, Massachusetts", "score": 0.6}
+    ],
+    "springfield, missouri": [{"lat": 37.2089, "lon": -93.2923, "name": "Springfield, Missouri"}],
+    "springfield missouri": [{"lat": 37.2089, "lon": -93.2923, "name": "Springfield, Missouri"}],
+    "rattlesnake creek": [{"lat": 44.1, "lon": -121.3, "name": "Rattlesnake Creek, Oregon", "score": 0.9}]
+  },
+  "sensors": [
+    {
+      "name": "Hamilton Main",
+      "lat": 46.248,
+      "lon": -114.158,
+      "ageMinutes": 3,
+      "pm": 60,
+      "humidity": 40,
+      "confidence": 100
+    },
+    {"name": "Corvallis", "lat": 46.34, "lon": -114.12, "ageMinutes": 4, "pm": 5, "humidity": 40},
+    {"name": "Darby Road", "lat": 46.15, "lon": -114.18, "ageMinutes": 4, "pm": 5, "humidity": 40},
+    {"name": "Skalkaho", "lat": 46.25, "lon": -114.02, "ageMinutes": 5, "pm": 6, "humidity": 40},
+    {
+      "name": "Hamilton Garage",
+      "lat": 46.247,
+      "lon": -114.16,
+      "ageMinutes": 2,
+      "pm": 300,
+      "humidity": 40,
+      "confidence": 10
+    },
+    {"name": "Downtown Missoula", "lat": 46.872, "lon": -113.994, "ageMinutes": 10, "pm": 25, "humidity": 30},
+    {"name": "Hip Strip", "lat": 46.863, "lon": -113.996, "ageMinutes": 4, "pm": 24, "humidity": 32},
+    {"name": "Northside", "lat": 46.881, "lon": -114.001, "ageMinutes": 6, "pm": 26, "humidity": 29},
+    {"name": "University District", "lat": 46.861, "lon": -113.982, "ageMinutes": 3, "pm": 25, "humidity": 31},
+    {"name": "Slant Streets", "lat": 46.859, "lon": -114.004, "ageMinutes": 12, "pm": 27, "humidity": 30},
+    {"name": "Westside", "lat": 46.876, "lon": -114.02, "ageMinutes": 5, "pm": 23, "humidity": 33},
+    {"name": "Franklin to the Fort", "lat": 46.853, "lon": -114.013, "ageMinutes": 7, "pm": 26, "humidity": 30},
+    {"name": "Barbecue Backyard", "lat": 46.866, "lon": -113.975, "ageMinutes": 2, "pm": 140, "humidity": 30},
+    {"name": "Old Garage", "lat": 46.868, "lon": -113.99, "ageMinutes": 40, "pm": 10, "humidity": 30},
+    {"name": "No Humidity", "lat": 46.87, "lon": -113.985, "ageMinutes": 3, "pm": 25},
+    {"name": "Rattlesnake Creek Upper", "lat": 46.98, "lon": -113.95, "ageMinutes": 8, "pm": 6, "humidity": 40},
+    {"name": "Snowbowl Road Broken", "lat": 46.99, "lon": -113.96, "ageMinutes": 4, "pm": 12},
+    {"name": "Grant Creek", "lat": 46.93, "lon": -114.06, "ageMinutes": 2, "pm": 20, "humidity": 35},
+    {"name": "Seeley Lake Ranger", "lat": 47.18, "lon": -113.49, "ageMinutes": 3, "pm": 14, "humidity": 45},
+    {"name": "Seeley Lake Ridge", "lat": 47.26, "lon": -113.45, "ageMinutes": 5, "pm": 16, "humidity": 44},
+    {"name": "Polson Bay", "lat": 47.69, "lon": -114.16, "ageMinutes": 45, "pm": 8, "humidity": 50},
+    {"name": "Polson Hill", "lat": 47.7, "lon": -114.17, "ageMinutes": 52, "pm": 9, "humidity": 50},
+    {"name": "Paradise Fire 1", "lat": 47.389, "lon": -114.8, "ageMinutes": 2, "pm": 300, "humidity": 20},
+    {"name": "Paradise Fire 2", "lat": 47.392, "lon": -114.79, "ageMinutes": 3, "pm": 310, "humidity": 21},
+    {"name": "Paradise Fire 3", "lat": 47.385, "lon": -114.81, "ageMinutes": 1, "pm": 290, "humidity": 19},
+    {"name": "Springfield Downtown", "lat": 37.209, "lon": -93.292, "ageMinutes": 4, "pm": 9, "humidity": 60},
+    {"name": "Springfield Park", "lat": 37.215, "lon": -93.3, "ageMinutes": 5, "pm": 10, "humidity": 60},
+    {"name": "Springfield Square", "lat": 37.2, "lon": -93.28, "ageMinutes": 6, "pm": 11, "humidity": 60}
+  ]
+}

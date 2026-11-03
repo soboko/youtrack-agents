@@ -1,0 +1,4 @@
+{
+  "extends": "../../../tsconfig.json",
+  "include": ["../../../src/voice/air/**/*.ts", "../../../src/voice/core/types.ts", "./**/*.ts"]
+}
