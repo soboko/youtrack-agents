@@ -363,6 +363,9 @@ Not a YouTrack-workflow rule (see "Where a new rule goes" above) but stated here
 - Prose anywhere in this repository — comments, README, this file, commit messages — uses UK/Canadian
   spelling and idiom (colour, centre, behaviour, organise, travelling, ...). New/touched prose only, not a
   retrofit of what is already written. See README.md "Conventions" for why this is written down at all.
+- **Never force-push `main`**, and never rewrite a commit that is already on it (amend, rebase, squash, reset).
+  Host projects pin this repository as a submodule at a `main` commit, and a rewritten commit leaves their pointer
+  aimed at nothing. Every change lands as a new commit on top, pushed normally.
 
 ## Subsystems
 

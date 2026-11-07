@@ -8,6 +8,27 @@ tokens. Runs directly under Node 22.18 or newer (type stripping); no build step,
 
 ## Quick start
 
+### If you do not have a YouTrack instance yet
+
+Either takes a few minutes, and both are free for up to 10 users, which is plenty for one person and their
+agents (one shared agent user is enough; the model and session are stamped on every write):
+
+- **In the cloud.** Sign up at [jetbrains.com/youtrack](https://www.jetbrains.com/youtrack/download/get_youtrack.html)
+  with an instance name and an email address, and you get `https://<name>.youtrack.cloud`. The free plan has no
+  time limit.
+- **On localhost, with Docker.** JetBrains publishes an official image, `jetbrains/youtrack`. Run it with
+  volumes for its data, conf, logs and backups and port 8080 published, open it in a browser and finish the
+  configuration wizard (its one-time token is in the container's log).
+  [JetBrains' Docker instructions](https://www.jetbrains.com/help/youtrack/server/youtrack-docker-installation.html)
+  have the exact command. The tool accepts plain `http:` only for `localhost`.
+
+Then create a project, and a permanent token for the user the agents will act as (Profile > Account Security >
+Tokens).
+
+I have no affiliation with JetBrains or YouTrack; I just like their development tools.
+
+### Adding it to your repository
+
 In an existing repository, with a YouTrack project you administer and a permanent token for it:
 
 1. **Add the tool** as a submodule:
