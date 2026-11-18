@@ -12,6 +12,7 @@ export function help(project = 'PRJ'): string {
   yt create --summary S [--description D | --description-file F | --description -]
             --recommend <model id | 'owner (no model)'>   REQUIRED: which model should do it (yt fields lists the values)
             --role 'Builder'                  REQUIRED: who acts next (Director | Builder | Reviewer: correctness|security|testing|operations|product | Judge | Owner decides|verifies|operates)
+                                              a project that makes films also has Producer | Reviewer: script|picture|sound|access|production|audience
             [--type Task] [--priority Normal] [--state Submitted] --subsystem S [--assignee login]
             [--set 'Field=Value' ...]         create an issue; AI Model / AI Session ID are filled in from identity
   yt take ${project}-1                                take it: In Progress, on the current sprint of every board that runs one, assigned to you;

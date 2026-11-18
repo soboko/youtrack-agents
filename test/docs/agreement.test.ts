@@ -10,7 +10,7 @@ import type {CliDependencies} from '../../src/cli/run.ts';
 import {assertAccountingSupported} from '../../src/accounting/actuals.ts';
 import {createTrackerAdapter} from '../../src/youtrack/adapter.ts';
 import {finishIssue, takeIssue} from '../../src/workflow/operations.ts';
-import {ROLES} from '../../src/workflow/policy.ts';
+import {FILM_ROLES, ROLES} from '../../src/workflow/policy.ts';
 import {createClient, loadConfig} from '../../client.ts';
 import {fixture} from '../workflow/fake.ts';
 
@@ -189,6 +189,22 @@ test('ADOPTING.md lists exactly the canonical Role values', () => {
   const match = /`yt field add 'Role' --values '([^']+)'`/.exec(readDocument('ADOPTING.md'));
   assert.ok(match, 'ADOPTING.md no longer shows the Role field command');
   assert.deepEqual(match[1].split(','), [...ROLES]);
+});
+
+// YA-43: the film roles are an optional second command, never part of the field every project creates.
+test('ADOPTING.md lists exactly the film Role values, in a command of their own', () => {
+  const commands = [...readDocument('ADOPTING.md').matchAll(/`yt field add 'Role' --values '([^']+)'`/g)];
+  assert.equal(commands.length, 2, 'ADOPTING.md should show the canonical Role command and the film one');
+  assert.deepEqual(commands[1][1].split(','), [...FILM_ROLES]);
+  for (const role of FILM_ROLES) assert.ok(!commands[0][1].split(',').includes(role), role);
+});
+
+test('the help for --role names every film role', () => {
+  const line = HELP.split('\n').find((text) => /makes films/.test(text)) ?? '';
+  for (const role of FILM_ROLES) {
+    const kind = role.startsWith('Reviewer: ') ? role.slice('Reviewer: '.length) : role;
+    assert.ok(line.includes(kind), `help does not name ${role}`);
+  }
 });
 
 test('Fixed is described as a hand-off, never as merged, deployed or a machine state', () => {

@@ -27,6 +27,9 @@ Do this once, as a project admin, with the token the agents will use.
    - `AI Model` and `AI Session ID`: string fields.
    - `Recommended model`: `yt field add 'Recommended model' --values '<your model ids>,owner (no model)'`.
    - `Role`: `yt field add 'Role' --values 'Director,Builder,Reviewer: correctness,Reviewer: security,Reviewer: testing,Reviewer: operations,Reviewer: product,Judge,Owner decides,Owner verifies,Owner operates'` (see `src/workflow/policy.ts` and AGENTS.md "Role").
+     A project that makes films also adds the film roles to the same field:
+     `yt field add 'Role' --values 'Producer,Reviewer: script,Reviewer: picture,Reviewer: sound,Reviewer: access,Reviewer: production,Reviewer: audience'`.
+     Leave them out otherwise; the command only adds values, so it can be run later.
 4. **Boards.** One kanban board, columns = `State` (in the order above), swimlanes = `Subsystem`. Optionally a
    second board restricted to some swimlanes. For each board:
    - `yt sprint enable --board 'Name'` (sets explicit membership too), rename the default sprint to `Sprint 1`

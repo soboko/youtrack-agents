@@ -44,8 +44,9 @@ broader connector choice remains separate. The port is a test seam, not a sandbo
 - Workflow text output is now the issue line plus the workflow status and its steps. `create` also prints the
   issue URL, and `take` prints the assignee and the sprints it placed the issue on once its update is confirmed.
   Fields are no longer printed.
-- `take` refuses an issue whose Role is not one of the canonical values, as it refuses an Owner role, since it
-  may be waiting on a person. `--force` takes it and leaves that Role unchanged.
+- `take` refuses an issue whose Role is not one of the values the tool accepts (the canonical eleven and the film
+  roles), as it refuses an Owner role, since it may be waiting on a person. `--force` takes it and leaves that Role
+  unchanged.
 - Completed workflows exit 0. Rejected, partial and unknown workflows exit 1. A nonzero exit does not mean
   nothing happened. Inspect `applied`, `pending` and `uncertain` before deciding how to continue.
 - Validation/startup exceptions with `--json` return `{version: 1, status, error}`; they do not necessarily

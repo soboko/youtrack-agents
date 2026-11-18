@@ -256,10 +256,23 @@ Role is what the model, or the person, is being when they pick it up. Eleven val
 | Owner verifies | human | a by-eye or on-device check of something built |
 | Owner operates | human | a real-world action only a person can take: a production deploy, credentials, spending, a physical device |
 
+**A project that makes films has seven more**, all agent roles (`FILM_ROLES` in `src/workflow/policy.ts`):
+
+| Role | who | the persona |
+|---|---|---|
+| Producer | agent | plans a film: the brief, the kind of film, the gates, the review level and the budget. It is to a film what the Director is to code; films do not call it the Director because a film may have one of its own |
+| Reviewer: script / picture / sound / access / production / audience | agent | reads the screenplay, or what it became on screen, from the finished artefacts in a clean checkout, and never fixes it; the kind says which review the host's film rules asked for |
+
+Builder, Judge and the three Owner roles serve films as they are. The film roles exist only in the Role field of a
+project that added them (`ADOPTING.md`), and say nothing about how a film's code is reviewed: that goes to the
+`Reviewer: correctness` and the other code kinds, like any code. The host's AGENTS.md says what a film is there and
+maps each film role to its file.
+
 Rules:
 
 - **Set at creation** (`yt create --role ...`, required). Features and bugs start as Builder; epics and packets as
-  Director; a question as Owner decides. An issue created with an Owner role is assigned to the owner at once.
+  Director; a film's plan as Producer; a question as Owner decides. An issue created with an Owner role is assigned to
+  the owner at once.
 - **Changes only at a hand-off**, and every hand-off leaves a **pick-up note**: `yt handoff PRJ-n '<role>' 'note'`
   sets the Role, posts a comment headed *Hand-off to <role>* with the note, assigns the owner for the three Owner
   roles and unassigns for agent roles. The note says what the next role has to do and where things stand: the

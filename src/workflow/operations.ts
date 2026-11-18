@@ -1,7 +1,7 @@
 import {OWNER_PLACEHOLDER} from '../config.ts';
 import {TrackerFailure} from '../tracker.ts';
 import type {IssueChanges, NewIssue, TrackerPort, WorkflowResult, IterationTarget} from '../tracker.ts';
-import {canonicalRole, isOwnerRole, ROLES, roleOf} from './policy.ts';
+import {ALL_ROLES, canonicalRole, isOwnerRole, roleOf} from './policy.ts';
 
 /** Running totals of mutating requests, such as `YouTrackClient.writes`. */
 export interface DispatchCounts {
@@ -207,7 +207,7 @@ export async function createIssue(context: WorkflowContext, input: NewIssue): Pr
 }
 
 /**
- * Take preflights identity and all boards before changing assignment or state. A Role outside the canonical list
+ * Take preflights identity and all boards before changing assignment or state. A Role outside the accepted lists
  * might be a person's, so it is refused like an Owner role; `--force` takes the issue and keeps that Role as it is.
  */
 export async function takeIssue(context: WorkflowContext, key: string, force = false): Promise<WorkflowOutcome> {
@@ -217,7 +217,7 @@ export async function takeIssue(context: WorkflowContext, key: string, force = f
     const canonical = current ? canonicalRole(current) : 'Builder';
     if (!canonical && !force) {
       throw new Error(
-        `${key} has Role "${current}", which is not one of: ${ROLES.join(' | ')}; --force takes it anyway`,
+        `${key} has Role "${current}", which is not one of: ${ALL_ROLES.join(' | ')}; --force takes it anyway`,
       );
     }
     if (canonical && isOwnerRole(canonical) && !force) {

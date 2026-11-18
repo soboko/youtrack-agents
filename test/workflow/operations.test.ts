@@ -3,6 +3,7 @@ import {strict as assert} from 'node:assert';
 import {TrackerFailure} from '../../src/tracker.ts';
 import {fixture} from './fake.ts';
 import {createIssue, takeIssue, handoffIssue, finishIssue} from '../../src/workflow/operations.ts';
+import {ALL_ROLES, FILM_ROLES, ROLES, canonicalRole, isOwnerRole, roleOf} from '../../src/workflow/policy.ts';
 
 test('create validates canonical fields, including role passed outside CLI', async () => {
   const {context, writes} = fixture();
@@ -485,4 +486,57 @@ test('the fake tracker lists issues only as {issues, complete}', async () => {
   const listed = await fixture().tracker.listIssues({});
   assert.ok(!Array.isArray(listed));
   assert.deepEqual(Object.keys(listed).sort(), ['complete', 'issues']);
+});
+
+// YA-43: a project that makes films has seven more roles. They are agent roles, accepted wherever a role is.
+test('the film roles are accepted beside the canonical eleven, and none is an Owner role', () => {
+  assert.equal(ROLES.length, 11);
+  assert.equal(FILM_ROLES.length, 7);
+  assert.deepEqual([...ALL_ROLES], [...ROLES, ...FILM_ROLES]);
+  assert.equal(new Set(ALL_ROLES.map((role) => role.toLowerCase())).size, ALL_ROLES.length);
+  for (const role of FILM_ROLES) {
+    assert.equal(roleOf(role), role);
+    assert.equal(canonicalRole(`  ${role.toUpperCase()} `), role);
+    assert.equal(isOwnerRole(role), false);
+  }
+  assert.equal(canonicalRole('Reviewer: lighting'), undefined);
+  assert.throws(() => roleOf('Reviewer: lighting'), /unknown Role "Reviewer: lighting".*Producer.*Reviewer: audience/);
+});
+
+test('create accepts a film role and leaves the issue unassigned, as for any agent role', async () => {
+  const {context, issue, writes} = fixture();
+  const result = await createIssue(context, {
+    summary: 'Plan the film',
+    workflow: {role: 'producer', recommendedModel: 'gpt-6', subsystem: 'Test'},
+  });
+  assert.equal(result.status, 'completed', result.message);
+  assert.equal(issue.workflow.role, 'Producer');
+  assert.notEqual(issue.workflow.assignee, 'configured-owner');
+  assert.deepEqual(writes, ['create']);
+});
+
+test('handoff to a film reviewer sets the canonical Role and unassigns', async () => {
+  const {context, issue, tracker} = fixture();
+  let sent: unknown;
+  const update = tracker.updateIssue;
+  tracker.updateIssue = async (key, changes) => {
+    sent = changes.workflow;
+    return update(key, changes);
+  };
+  const result = await handoffIssue(context, 'PRJ-1', {role: 'reviewer: PICTURE', note: 'Draft render is ready'});
+  assert.equal(result.status, 'completed', result.message);
+  assert.deepEqual(sent, {role: 'Reviewer: picture', assignee: null});
+  assert.equal(issue.workflow.role, 'Reviewer: picture');
+});
+
+test('take adopts a film role without --force', async (t) => {
+  for (const role of FILM_ROLES) {
+    await t.test(role, async () => {
+      const f = fixture();
+      f.issue.workflow.role = role.toLowerCase();
+      const result = await takeIssue(f.context, 'PRJ-1');
+      assert.equal(result.status, 'completed', result.message);
+      assert.equal(f.issue.workflow.role, role);
+    });
+  }
 });

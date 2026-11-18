@@ -26,6 +26,10 @@ Recommended model field, and the document-audit convention. This section holds o
 - **Role files** (what `yt take` tells you to read): Director `<path>`, Builder `<path>`, Reviewer: correctness
   `<path>`, security `<path>`, testing `<path>`, operations `<path>`, product `<path>`, Judge `<path>`. The three
   Owner roles are the owner; there is no file.
+- **Film role files** (only if this project makes films; delete this item otherwise): Producer `<path>`, Reviewer:
+  script `<path>`, picture `<path>`, sound `<path>`, access `<path>`, production `<path>`, audience `<path>`, and the
+  Judge for a film `<path>`. Say here what counts as a film in this project, and that its code is still reviewed by
+  the code reviewers.
 
 ### Subsystems
 
